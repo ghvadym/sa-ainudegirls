@@ -1,0 +1,144 @@
+//Core
+@import "core/variables";
+@import "core/mixins";
+
+.hero_section {
+    position: relative;
+}
+
+.cta__title {
+    margin-bottom: 24px;
+
+    @include response-min($desktop) {
+        text-align: left;
+    }
+
+    @include response-max($laptop-landscape - 1) {
+        font-size: 32px;
+        margin-bottom: 16px;
+        text-align: center;
+    }
+}
+
+.cta__btn {
+    text-transform: capitalize;
+}
+
+.cta__row {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+
+    &.cta__row_reverse {
+        flex-direction: row-reverse;
+    }
+
+    @include response-min($desktop) {
+        & > .cta__btn {
+            display: none;
+        }
+    }
+
+    @include response-max($laptop-landscape - 1) {
+        flex-direction: column;
+
+        &.cta__row_reverse {
+            flex-direction: column-reverse;
+        }
+    }
+}
+
+.cta__content {
+    max-width: 584px;
+
+    @include response-max($laptop-landscape - 1) {
+        & > .cta__btn {
+            display: none;
+        }
+    }
+}
+
+.cta__subtitle {
+    font-size: 22px;
+    line-height: 1.6;
+
+    @include response-min($desktop) {
+        margin-bottom: 64px;
+    }
+
+    @include response-max($laptop-landscape - 1) {
+        font-size: 19px;
+        margin-bottom: 0;
+        text-align: center;
+    }
+}
+
+.search__buttons {
+    margin-top: 48px;
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+
+    @include response-max($mobile) {
+        gap: 16px;
+        margin-top: 24px;
+    }
+}
+
+.search__button {
+    height: 80px;
+    max-width: 276px;
+    width: 100%;
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @include response-max($mobile) {
+        height: 70px;
+    }
+}
+
+.tags__list {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.tags__item {
+    color: $color-main;
+    border: 2px solid $color-main;
+    border-radius: 42px;
+    padding: 0 32px;
+    font-size: 24px;
+    height: 53px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 12px 5px rgba(164, 116, 114, 0.07);
+    background-color: #fff;
+
+    &:active, &:focus {
+        outline: none;
+        color: $color-main;
+        border-color: $color-main;
+        background: #fff;
+        box-shadow: 0 0 0 0 rgba(164, 116, 114, 0)
+    }
+
+    @include response-min($desktop) {
+        &:hover {
+            outline: none;
+            color: $color-main-hover;
+            border-color: $color-main-hover;
+            background: #fff;
+            box-shadow: 0 0 0 0 rgba(164, 116, 114, 0)
+        }
+    }
+
+    @include response-max($laptop-landscape - 1) {
+        font-size: 22px;
+        height: 50px;
+    }
+}

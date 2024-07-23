@@ -1,0 +1,29 @@
+.faq_section {
+    .title {
+        color: $color-main;
+    }
+}
+
+.faq__item {
+    background: #fff;
+    box-shadow: 0 4px 12px 0 rgba(141, 110, 109, 0.1);
+    padding: 16px 24px;
+    border-radius: 12px;
+
+    &:not(:last-child) {
+        margin-bottom: 16px;
+    }
+}
+
+.faq__title {
+    color: $color-main;
+    margin-bottom: 8px;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.faq__text {
+    a {
+        text-decoration: underline;
+    }
+}

@@ -1,0 +1,119 @@
+.articles {
+    display: grid;
+    grid-column-gap: 32px;
+    grid-row-gap: 48px;
+
+    .no-posts-message {
+        grid-column: span 4;
+        margin: 30px 0;
+    }
+
+    @include response-min($mobile + 1) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include response-min($laptop-landscape) {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    @include response-max($laptop-landscape) {
+        grid-column-gap: 16px;
+        grid-row-gap: 16px;
+    }
+}
+
+.article {
+    @include response-min($desktop) {
+        &:hover {
+            .article__img {
+                img {
+                    transform: scale(1.1);
+                }
+            }
+        }
+    }
+}
+
+.article__img {
+    margin-bottom: 8px;
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    width: 100%;
+    aspect-ratio: 1/1;
+
+    img {
+        object-fit: cover;
+        transition: $transition;
+    }
+}
+
+.article__title {
+    margin-bottom: 12px;
+    text-align: center;
+
+    a  {
+        color: $color-main;
+        font-size: 24px;
+        font-weight: 400;
+        line-height: 1.4;
+        transition: $transition;
+    }
+
+    @include response-min($desktop) {
+        &:hover {
+            a {
+                color: $color-main-hover;
+            }
+        }
+    }
+}
+
+.article__img:hover {
+    .article__socials {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+.articles__btn {
+    text-align: center;
+    margin: 48px 0 0;
+    padding-bottom: 5px;
+
+    @include response-max($mobile) {
+        margin-top: 24px;
+    }
+}
+
+.article__text {
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.4;
+    color: $color-font;
+    @include line-break(2);
+}
+
+.article__author {
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+
+    img {
+        width: 24px;
+        height: 24px;
+        object-fit: cover;
+        border-radius: 50%;
+        margin-right: 8px;
+    }
+
+    span {
+        line-height: 1;
+    }
+}
+
+.article__date {
+    color: $color-font;
+    line-height: 1;
+    font-size: 12px;
+}

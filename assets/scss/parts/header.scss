@@ -1,0 +1,203 @@
+[id=header] {
+    width: 100%;
+    padding: 20px 0;
+
+    .header__menu {
+        a {
+            color: $color-font;
+            font-size: 18px;
+            white-space: nowrap;
+            line-height: 1;
+            padding: 8px 16px;
+        }
+    }
+
+    @media (max-width: $header-responsive) {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 10;
+        padding: 16px 0;
+        transition: $transition;
+
+        .header__menu {
+            width: 100vw;
+            height: 100vh;
+            background: rgba(251, 162, 173, 0.9);
+            backdrop-filter: blur(10px);
+        }
+    }
+}
+
+@media (max-width: $header-responsive) {
+    [id=header] {
+        &._scrolled {
+            background: rgba(251, 162, 173, 0.7);
+            backdrop-filter: blur(8px);
+        }
+    }
+}
+
+.header__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.search__head {
+    max-width: 710px;
+    margin: 0 auto 48px;
+    text-align: center;
+
+    @include response-max($mobile) {
+        margin-bottom: 32px;
+    }
+}
+
+.header__menu {
+    margin-left: auto;
+
+    ul {
+        display: flex;
+        align-items: center;
+
+        li {
+            transition: $transition;
+            border-bottom: 1px solid transparent;
+
+            @include response-min($header-responsive + 1) {
+                &.current-menu-item, &.current_page_item {
+                    a {
+                        color: $color-main;
+                    }
+
+                    border-color: $color-main;
+                }
+
+                &:not(:last-child) {
+                    margin-right: 24px;
+                }
+
+                &:hover {
+                    a {
+                        color: $color-main;
+                    }
+                }
+            }
+
+            @include response-max($header-responsive) {
+                &.current-menu-item {
+                   border-color: #fff;
+                }
+
+                &:hover {
+                    border-color: #fff;
+                }
+            }
+        }
+    }
+
+    @include response-max($header-responsive) {
+        display: none;
+        padding: 150px 15px 15px;
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 10;
+        width: 100%;
+        height: 100%;
+
+        .menu {
+            flex-direction: column;
+            text-align: center;
+
+            li {
+                &:not(:last-child) {
+                    margin-bottom: 32px;
+                }
+
+                a {
+                    font-size: 26px;
+                    padding: 16px 24px;
+                    color: #fff;
+                }
+
+                &.partner {
+                    margin-top: 70px;
+                    max-width: 296px;
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
+
+.header__burger, .header__logo {
+    z-index: 11;
+}
+
+.header__logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+
+    .custom-logo-link {
+        width: 53px;
+        height: 55px;
+    }
+
+    @include response-max($mobile) {
+        .logo__title {
+            display: none;
+        }
+    }
+}
+
+.logo__title {
+    padding: 0;
+    font-weight: 900;
+    font-size: 24px;
+    line-height: 40px;
+    color: $color-main;
+}
+
+.header__burger {
+    @include response-min($header-responsive) {
+        display: none;
+    }
+
+    @include pointer;
+
+    max-width: 20px;
+
+    .header_close_icon {
+        display: none;
+    }
+}
+
+[id=header] {
+    &.active-menu {
+        .header_burger_icon {
+            display: none;
+        }
+
+        .header_close_icon {
+            filter: brightness(0) invert(1);
+            display: block;
+            animation: fadeId $transition;
+        }
+
+        .header__menu {
+            display: block;
+            animation: fadeId $transition;
+        }
+    }
+
+    &:not(.active-menu) {
+        .header_burger_icon {
+            display: block;
+            animation: fadeId $transition;
+        }
+    }
+}

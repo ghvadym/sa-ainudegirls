@@ -1,0 +1,125 @@
+//Core
+@import "core/variables";
+@import "core/mixins";
+
+.about_hero {
+    .about_hero__btn {
+        text-align: center;
+    }
+
+}
+
+.about_hero__btn {
+    @include response-max($mobile) {
+        a {
+            display: block;
+        }
+    }
+}
+
+.about_hero__img {
+    aspect-ratio: 16 / 9;
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 48px 0;
+
+    img {
+        object-fit: cover;
+    }
+
+    @include response-max($mobile) {
+        margin: 32px 0;
+    }
+}
+
+.offers__slider {
+    margin-top: 48px;
+
+    @include response-max($laptop-landscape - 1) {
+        margin-top: 32px;
+    }
+}
+
+.offers__slider_item {
+    max-width: 378px;
+    border-radius: 16px;
+    overflow: hidden;
+    padding: 30px 24px;
+    background-color: #fff;
+    box-shadow: 0 4px 12px 0 rgba(141, 110, 109, 0.1);
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top;
+    }
+
+    @include response-max($mobile) {
+        padding: 16px 24px;
+    }
+}
+
+.offer__title {
+    color: $color-main;
+    font-size: 24px;
+    line-height: 1.2;
+    margin-bottom: 12px;
+
+    @include response-max($mobile) {
+        font-size: 28px;
+    }
+}
+
+.offer__text {
+    font-size: 16px;
+    line-height: 1.5;
+
+    @include response-max($mobile) {
+        font-size: 18px;
+    }
+}
+
+.about_cta__item {
+    padding: 16px 24px;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: 0 4px 12px 0 rgba(141, 110, 109, 0.1);
+    line-height: 1.6;
+    font-size: 16px;
+
+    &:not(:last-child) {
+        margin-bottom: 32px;
+    }
+
+    @include response-max($mobile) {
+        font-size: 18px;
+    }
+}
+
+.about_cta {
+    .socials {
+        justify-content: center;
+        margin-top: 48px;
+    }
+
+    .social__item {
+        width: 60px;
+        height: 60px;
+        background-color: $color-main;
+        border-radius: 50%;
+        overflow: hidden;
+        padding: 12px;
+
+        img {
+            filter: brightness(0) invert(1);
+        }
+    }
+
+    @include response-max($laptop-landscape - 1) {
+        .socials {
+            margin-top: 32px;
+        }
+    }
+}
