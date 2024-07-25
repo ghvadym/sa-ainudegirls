@@ -23,3 +23,37 @@ function logo()
         </span>
     <?php }
 }
+
+function api_request(array $args = [])
+{
+    if (empty($args)) {
+        return [];
+    }
+
+    $curlUrl = $args['curl_url'] ?? '';
+    $method = $args['method'] ?? 'GET';
+    $postData = $args['data'] ?? [];
+    $header = $args['headers'] ?? [];
+
+    $curl = curl_init();
+
+    $params = [
+        CURLOPT_URL            => $curlUrl,
+        CURLINFO_HEADER_OUT    => true,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER     => $header,
+        CURLOPT_CUSTOMREQUEST  => $method
+    ];
+
+    if ($method !== 'GET' && !empty($postData)) {
+        $params[CURLOPT_POSTFIELDS] = json_encode($postData);
+    }
+
+    curl_setopt_array($curl, $params);
+
+    $response = curl_exec($curl);
+
+    curl_close($curl);
+
+    return json_decode($response);
+}

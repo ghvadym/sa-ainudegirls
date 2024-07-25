@@ -36,6 +36,7 @@ Thumbs.db
 
 # ignore node dependency directories
 node_modules/
+lib/
 *-lock.json
 
 # ignore log files and databases

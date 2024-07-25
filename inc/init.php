@@ -9,6 +9,7 @@ if (!defined('POSTS_PER_PAGE')) {
 $files = [
     'helper',
     'custom_functions',
+    'api',
     'cpt',
     'sidebar',
     'setup',
