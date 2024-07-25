@@ -32,6 +32,21 @@ function wp_enqueue_scripts_call()
     }
 }
 
+add_action('admin_enqueue_scripts', 'admin_scripts_call');
+function admin_scripts_call()
+{
+    $post = get_post();
+    if (!empty($post) && $post->post_type === 'post') {
+        wp_enqueue_style('post-custom-styles', FV_THEME_URL . '/dest/css/admin-styles.css');
+        wp_enqueue_script('post-custom-scripts', FV_THEME_URL . '/dest/js/admin-scripts.js');
+    }
+
+    wp_localize_script('post-custom-scripts', 'adminajax', [
+        'ajaxurl' => admin_url('admin-ajax.php'),
+        'nonce'   => wp_create_nonce('admin-nonce')
+    ]);
+}
+
 add_action('after_setup_theme', 'after_setup_theme_call');
 function after_setup_theme_call()
 {
@@ -107,4 +122,27 @@ function disable_emojis_remove_dns_prefetch($urls, $relation_type)
     }
 
     return $urls;
+}
+
+add_action('add_meta_boxes', 'register_meta_boxes_call');
+function register_meta_boxes_call()
+{
+    add_meta_box(
+        'faq-fields',
+        __('FAQ By AI', DOMAIN),
+        'faq_metabox_call',
+        'post',
+        'side',
+        'default'
+    );
+}
+
+function faq_metabox_call($post)
+{
+    echo sprintf(
+        '<small class="faq_ai_text">%1$s</small><div id="faq-ai-generate" class="components-button is-primary faq_ai_btn" data-id="%2$s">%3$s</div>',
+        __('The process may take a few minutes.', DOMAIN),
+        $post->ID,
+        __('Generate FAQ by AI', DOMAIN)
+    );
 }

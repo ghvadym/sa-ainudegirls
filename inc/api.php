@@ -28,20 +28,24 @@ function faq_answers_generation(int $postId = 0)
         $guide = "Include information about $name's identity, her professional activities, and why she's popular on Fanvue.";
         $promptBody = get_field('prompt_body', 'options');
 
-        ask_question($modelFields, $question, $promptBody, $keywords, $wordCount, $guide);
+        $answer = ask_question($modelFields, $question, $promptBody, $keywords, $wordCount, $guide);
+
+        if ($answer) {
+            faq_update($postId, $question, $answer);
+        }
     }
 }
 
 function ask_question($modelInfo, $question, $promptBody, $keywords, $wordCount, $guide)
 {
     if (empty($modelInfo) || empty($question) || empty($promptBody)) {
-        return;
+        return '';
     }
 
     $questionBlank = model_fields_replacement($promptBody, $modelInfo);
 
     if (empty($questionBlank)) {
-        return;
+        return '';
     }
 
     $fullQuestion = "
@@ -246,4 +250,41 @@ Process the text and return only the modified version with keywords inserted as 
     } catch (Exception $e) {
         print_r('Error during text processing in OpenAI: ' . $e->getMessage());
     }
+}
+
+function faq_update($postId = 0, $question = '', $answer = '')
+{
+    if (!$postId || !$question || !$answer) {
+        return;
+    }
+
+    $faq = get_field('faq', $postId);
+    $updatedFaq = $faq;
+
+    if (!empty($faq)) {
+        foreach ($faq as $index => $data) {
+            $title = $data['title'] ?? '';
+            $text = $data['text'] ?? '';
+
+            /* If question exists - update answer */
+            if ($title && trim($title) === trim($question)) {
+                $updatedFaq[$index]['text'] = $answer;
+                break;
+            }
+
+            $updatedFaq[] = [
+                'title' => $question,
+                'text'  => $answer
+            ];
+
+            break;
+        }
+    } else {
+        $updatedFaq[] = [
+            'title' => $question,
+            'text'  => $answer
+        ];
+    }
+
+    update_field('faq', $updatedFaq, $postId);
 }

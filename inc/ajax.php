@@ -1,7 +1,8 @@
 <?php
 
 register_ajax([
-    'load_posts'
+    'load_posts',
+    'faq_by_ai'
 ]);
 
 function load_posts()
@@ -56,4 +57,27 @@ function load_posts()
         'count'     => count($posts->posts),
         'end_posts' => count($posts->posts) < $numberposts
     ]);
+}
+
+function faq_by_ai()
+{
+    check_ajax_referer('admin-nonce', 'nonce');
+
+    $data = sanitize_post($_POST);
+
+    if (empty($data)) {
+        wp_send_json_error('There is no data');
+        return;
+    }
+
+    $postId = $data['post_id'] ?? 0;
+
+    if (!$postId) {
+        wp_send_json_error('There is no Post ID');
+        return;
+    }
+
+    faq_answers_generation($postId);
+
+    wp_send_json_success();
 }
