@@ -3,21 +3,42 @@
 require_once(__DIR__ . '/lib/anthropic-sdk-php/vendor/autoload.php');
 require_once(__DIR__ . '/lib/open-ai/vendor/autoload.php');
 
-function faq_answers_generation(int $postId = 0)
+function faq_answers_generation(int $postId = 0, int $step = 1)
 {
     if (!$postId) {
-        return;
+        wp_send_json([
+            'error'   => true,
+            'message' => 'There is no Post ID'
+        ]);
+
+        return false;
     }
 
     $questions = get_field('faq_questions', 'options');
-    $modelFields = get_field('fanvue_data', $postId);
+    $modelFields = get_fields($postId);
     $name = $modelFields['fanvue_name'] ?? '';
 
     if (empty($questions) || empty($modelFields) || empty($name)) {
-        return;
+        wp_send_json([
+            'error'   => true,
+            'message' => 'There is no necessary Data'
+        ]);
+
+        return false;
     }
 
-    foreach ($questions as $item) {
+    $countIteration = 1;
+    $iteration = 1;
+
+    foreach ($questions as $i => $item) {
+        if (($i + 1) < $step) {
+            continue;
+        }
+
+        if ($iteration > $countIteration) {
+            break;
+        }
+
         if (empty($item['question'])) {
             continue;
         }
@@ -33,7 +54,12 @@ function faq_answers_generation(int $postId = 0)
         if ($answer) {
             faq_update($postId, $question, $answer);
         }
+
+        $iteration++;
+        $step += 1;
     }
+
+    return $step > count($questions) ? 'finish' : $step;
 }
 
 function ask_question($modelInfo, $question, $promptBody, $keywords, $wordCount, $guide)
@@ -264,10 +290,13 @@ function faq_update($postId = 0, $question = '', $answer = '')
     if (!empty($faq)) {
         foreach ($faq as $index => $data) {
             $title = $data['title'] ?? '';
-            $text = $data['text'] ?? '';
+
+            if (!$title) {
+                continue;
+            }
 
             /* If question exists - update answer */
-            if ($title && trim($title) === trim($question)) {
+            if (trim($title) === trim($question)) {
                 $updatedFaq[$index]['text'] = $answer;
                 break;
             }

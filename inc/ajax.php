@@ -71,13 +71,26 @@ function faq_by_ai()
     }
 
     $postId = $data['post_id'] ?? 0;
+    $step = $data['step'] ?? 1;
 
     if (!$postId) {
         wp_send_json_error('There is no Post ID');
         return;
     }
 
-    faq_answers_generation($postId);
+    $result = faq_answers_generation($postId, $step);
+
+    if (!$result) {
+        return;
+    }
+
+    if ($result !== 'finish') {
+        wp_send_json([
+            'step' => $result
+        ]);
+
+        return;
+    }
 
     wp_send_json_success();
 }
