@@ -17,6 +17,7 @@
             }
 
             const postId = $(btn).data('id');
+            const errorMessage = $('.faq_ai_error');
 
             jQuery.ajax({
                 type       : 'POST',
@@ -34,15 +35,19 @@
                 },
                 success    : function (response) {
                     if (response.step) {
+                        $(errorMessage).empty();
                         faqAiGenerate(btn, response.step);
                     }
 
                     if (response.error) {
-                        $("<p class='faq_ai_error' '>Something vent wrong, contact with developer.</p>").insertAfter(btn);
+                        let message = response.message ? response.message : 'Something went wrong';
+                        $(errorMessage).html(message);
+                        $(btn).removeClass('_spinner');
                     }
 
                     if (response.success) {
                         $(btn).removeClass('_spinner');
+                        $(errorMessage).empty();
                         location.reload();
                     }
                 },

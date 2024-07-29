@@ -140,7 +140,7 @@ function register_meta_boxes_call()
 function faq_metabox_call($post)
 {
     echo sprintf(
-        '<small class="faq_ai_text">%1$s<br>%2$s</small><div id="faq-ai-generate" class="components-button is-primary faq_ai_btn" data-id="%3$s">%4$s</div>',
+        '<small class="faq_ai_text">%1$s<br>%2$s</small><div id="faq-ai-generate" class="components-button is-primary faq_ai_btn" data-id="%3$s">%4$s</div><p class="faq_ai_error"></p>',
         __('The process may take a few minutes.', DOMAIN),
         $post->post_status !== 'publish' ? __('Publish the post beforehand.', DOMAIN) : '',
         $post->ID,

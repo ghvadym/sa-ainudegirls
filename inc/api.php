@@ -18,10 +18,19 @@ function faq_answers_generation(int $postId = 0, int $step = 1)
     $modelFields = get_fields($postId);
     $name = $modelFields['fanvue_name'] ?? '';
 
-    if (empty($questions) || empty($modelFields) || empty($name)) {
+    if (empty($questions)) {
         wp_send_json([
             'error'   => true,
-            'message' => 'There is no necessary Data'
+            'message' => 'There is no prepared questions. Fill out them first here: <a href="'.admin_url('admin.php?page=theme-general-settings').'" target="_blank">Options</a>'
+        ]);
+
+        return false;
+    }
+
+    if (empty($modelFields) || empty($name)) {
+        wp_send_json([
+            'error'   => true,
+            'message' => 'There is no necessary Fanvue data, check fields'
         ]);
 
         return false;
@@ -288,25 +297,21 @@ function faq_update($postId = 0, $question = '', $answer = '')
     $updatedFaq = $faq;
 
     if (!empty($faq)) {
-        foreach ($faq as $index => $data) {
-            $title = $data['title'] ?? '';
+        $faqTitles = array_map('trim', array_column($faq, 'title'));
 
-            if (!$title) {
-                continue;
-            }
+        /* If question exists rewrite answer or add new line */
+        if (in_array(trim($question), $faqTitles)) {
+            $faqTitlesIndex = array_search($question, $faqTitles);
 
-            /* If question exists - update answer */
-            if (trim($title) === trim($question)) {
-                $updatedFaq[$index]['text'] = $answer;
-                break;
-            }
-
+            $updatedFaq[$faqTitlesIndex] = [
+                'title' => $question,
+                'text'  => $answer
+            ];
+        } else {
             $updatedFaq[] = [
                 'title' => $question,
                 'text'  => $answer
             ];
-
-            break;
         }
     } else {
         $updatedFaq[] = [
