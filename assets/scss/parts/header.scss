@@ -142,16 +142,16 @@
     gap: 10px;
     flex-shrink: 0;
 
-    .custom-logo-link {
-        width: 53px;
-        height: 55px;
-    }
-
     @include response-max($mobile) {
         .logo__title {
             display: none;
         }
     }
+}
+
+.custom-logo-link {
+    width: 53px;
+    height: 55px;
 }
 
 .logo__title {

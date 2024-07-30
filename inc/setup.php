@@ -147,3 +147,27 @@ function faq_metabox_call($post)
         __('Generate FAQ by AI', DOMAIN)
     );
 }
+
+add_filter('wp_nav_menu_items', 'add_custom', 10, 2);
+function add_custom($items, $args) {
+    if (wp_is_mobile()) {
+        return $items;
+    }
+
+    $footerMenuNames = [
+        'Footer menu 3',
+        'Footer menu 4',
+        'Footer menu 5',
+        'Footer menu 6',
+        'Footer menu 7',
+        'Footer menu 8',
+        'Footer menu 9',
+        'Footer menu 10'
+    ];
+
+    if (in_array($args->menu->name, $footerMenuNames) && $args->menu->count > 4) {
+        $items .= '<li class="menu_load_more" data-title="'.__('View Less', DOMAIN).'">'.__('View More', DOMAIN).'</li>';
+    }
+
+    return $items;
+}

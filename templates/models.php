@@ -49,7 +49,7 @@ if (empty($posts)) {
         <?php if ($posts > $numberposts) { ?>
             <div class="articles__btn">
                 <span id="articles_load" class="btn" data-page="1">
-                    <?php _e('Load more AI Models', DOMAIN); ?>
+                    <?php _e('Load more', DOMAIN); ?>
                 </span>
             </div>
         <?php } ?>
