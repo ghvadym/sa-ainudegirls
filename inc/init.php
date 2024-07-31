@@ -1,6 +1,7 @@
 <?php
 
 const DOMAIN = 'ainudegirls';
+const FANVUE_URL = 'https://fanvue.com/';
 
 if (!defined('POSTS_PER_PAGE')) {
     define('POSTS_PER_PAGE', get_option('posts_per_page') ?: 16);

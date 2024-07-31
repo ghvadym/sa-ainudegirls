@@ -26,6 +26,10 @@
         background-color: #fff;
         box-shadow: 0 4px 12px 0 rgba(141, 110, 109, 0.1);
         width: 100%;
+
+        p {
+            font-size: 18px
+        }
     }
 
     .single__content_img {
@@ -34,12 +38,6 @@
         img {
             object-fit: cover;
             border-radius: 12px;
-        }
-    }
-
-    @include response-max($laptop-landscape - 1) {
-        .text_block .card__btn {
-            margin-bottom: 0;
         }
     }
 
@@ -86,8 +84,6 @@
         box-shadow: 0 4px 12px 0 rgba(141, 110, 109, 0.1);
         flex-shrink: 0;
         height: fit-content;
-
-
     }
 
     .single__banner {
@@ -102,10 +98,6 @@
         .single__banner {
             max-width: 380px;
         }
-
-        .text_block .card__btn {
-            display: none;
-        }
     }
 
     @include response-max($laptop-landscape - 1) {
@@ -114,17 +106,13 @@
 }
 
 .card__img {
-    aspect-ratio: 2/2.5;
+    aspect-ratio: 1/1;
     overflow: hidden;
     border-radius: 12px;
     margin-bottom: 12px;
 
     img {
         object-fit: cover;
-    }
-
-    @include response-max($mobile) {
-        aspect-ratio: 1/1;
     }
 }
 
@@ -133,6 +121,7 @@
     font-size: 32px;
     margin-bottom: 12px;
     text-align: center;
+    font-weight: 400;
 
     @include response-max($mobile) {
         font-size: 24px;
@@ -148,33 +137,51 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
+    svg {
+        margin-right: 8px;
+        height: 14px;
+        width: 14px;
+    }
+
+    @include response-max($laptop-landscape - 1) {
+        margin-bottom: 8px;
+    }
 }
 
-.card__socials {
-    display: flex;
-    justify-content: center;
-    gap: 32px;
+.card__body {
+    @include response-max($laptop-landscape - 1) {
+        display: flex;
+        flex-direction: column;
+
+        .card__pricing {
+            order: 1;
+        }
+    }
 }
 
 .card__social {
-    width: 24px;
-    height: 24px;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 20px;
 
-    a {
-        display: block;
+    @include response-max($laptop-landscape - 1) {
+        margin-bottom: 10px;
     }
+}
 
-    img {
-        transition: $transition;
-        transform-origin: center;
-    }
+.card__social_item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 20px;
+    font-weight: 600;
+    color: $color-main;
 
-    @include response-min($desktop) {
-        &:hover {
-            img {
-                transform: scale(1.1);
-            }
-        }
+    svg {
+        width: 24px;
+        height: 24px;
     }
 }
 
@@ -182,4 +189,55 @@
     @include response-min($laptop-landscape) {
         max-width: 380px;
     }
+}
+
+.single__content {
+    .tags {
+        margin-top: 16px;
+
+        @include response-min($laptop-landscape) {
+            margin-left: 411px;
+        }
+
+        @include response-max($laptop-landscape - 1) {
+            margin-top: 24px;
+        }
+    }
+
+    .tags__list {
+        gap: 12px;
+        justify-content: flex-start;
+
+        @include response-max($laptop-landscape - 1) {
+            justify-content: center;
+        }
+    }
+
+    .tags__item {
+        height: 50px;
+        font-size: 20px;
+
+        @include response-max($laptop-landscape - 1) {
+            height: 47px;
+            font-size: 16px;
+            padding: 0 20px;
+        }
+    }
+
+    .tags__title {
+        font-size: 20px;
+        font-weight: 500;
+        margin-bottom: 16px;
+
+        @include response-max($laptop-landscape - 1) {
+            text-align: center;
+        }
+    }
+}
+
+.card__pricing {
+    text-align: center;
+    color: $color-main;
+    font-size: 20px;
+    margin-bottom: 8px;
 }

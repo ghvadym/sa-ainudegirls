@@ -258,15 +258,43 @@ function get_banner($imgId = 0, $url = ''): string
     );
 }
 
-function get_banner_field($key = '', $postFields = [], $optionFields = [], $mob = false)
+function banner_field($field = [], $classes = '')
 {
-    if (!$key || (empty($postFields) && empty($optionFields))) {
-        return null;
+    if (empty($field)) {
+        return;
     }
 
-    if ($mob && wp_is_mobile()) {
-        $key .= '_mob';
+    $type = $field['type'] ?? 'img';
+
+    echo sprintf('<div class="banner %1$s">', $classes);
+
+    if ($type === 'html') {
+
+        echo !empty($field['html']) ? $field['html'] : '';
+
+    } else if ($type === 'img') {
+
+        echo get_banner(
+            !wp_is_mobile() ? ($field['img'] ?? '') : ($field['img_mob'] ?: ($field['img'] ?? '')),
+            $field['url'] ?? ''
+        );
+
     }
 
-    return !empty($postFields[$key]) ? $postFields[$key] : ($optionFields[$key] ?? null);
+    echo '</div>';
+}
+
+function adv_banner_group($field = [], $option = [], $classes = '')
+{
+    if (empty($field) && empty($option)) {
+        return;
+    }
+
+    $type = $field['type'] ?? 'img';
+
+    if (($type === 'html' && empty($field['html'])) || ($type === 'img' && (empty($field['img']) && empty($field['img_mob'])))) {
+        $field = $option;
+    }
+
+    banner_field($field, $classes);
 }
