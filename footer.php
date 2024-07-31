@@ -4,8 +4,8 @@ wp_footer();
 if (is_category() || is_tag()) {
     $term = get_queried_object();
     if (!empty($term->term_id)) {
-        get_template_part_var('global/faq', [
-            'faq_list' => get_field('faq', 'term_'.$term->term_id)
+        get_template_part_var('global/archive-seo-text', [
+            'term_id' => $term->term_id
         ]);
     }
 }

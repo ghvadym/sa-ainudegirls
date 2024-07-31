@@ -1,13 +1,11 @@
 <?php
 
-$numberposts = wp_is_mobile() ? 4 : POSTS_PER_PAGE;
-
 $posts = _get_posts([
-    'numberposts' => $numberposts
+    'numberposts' => POSTS_PER_PAGE
 ]);
 
 if (empty($posts)) {
-    echo sprintf('<div class="container"><h3>%s</h3></div>', __('There are no models', DOMAIN));
+    echo sprintf('<section class="top_accounts"><div class="container"><h3>%s</h3></div></section>', __('There are no models', DOMAIN));
     return;
 }
 ?>

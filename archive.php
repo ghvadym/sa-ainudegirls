@@ -1,6 +1,8 @@
 <?php
 get_header();
 $term = get_queried_object();
+$count = $GLOBALS['wp_query']->found_posts;
+$queriedObject = get_queried_object();
 ?>
 
     <section class="archive">
@@ -17,13 +19,19 @@ $term = get_queried_object();
                             ]);
                         } ?>
                     </div>
+                    <?php if ($count > POSTS_PER_PAGE) { ?>
+                        <div class="articles__btn">
+                            <span id="articles_load" class="btn" data-page="1" data-cat="<?php echo $queriedObject->term_id; ?>">
+                                <?php _e('Load more AI Models', DOMAIN); ?>
+                            </span>
+                        </div>
+                    <?php } ?>
                 <?php } else { ?>
                     <h3 class="posts-none">
                         <?php _e('Sorry, no content matched your search criteria', DOMAIN); ?>
                     </h3>
                 <?php } ?>
             </div>
-            <?php get_template_part_var('global/pagination'); ?>
         </div>
     </section>
 

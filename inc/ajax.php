@@ -11,8 +11,9 @@ function load_posts()
 
     $data = sanitize_post($_POST);
     $page = $data['page'] ?? 1;
-    $search = $data['search'] ?? '';
-    $numberposts = wp_is_mobile() ? 4 : POSTS_PER_PAGE;
+    $termId = $data['term'] ?? 0;
+    $numberposts = POSTS_PER_PAGE;
+    $offset = ($page - 1) * $numberposts;
 
     if (empty($data)) {
         wp_send_json_error('There is no data');
@@ -24,13 +25,25 @@ function load_posts()
         'post_status'    => 'publish',
         'posts_per_page' => $numberposts,
         'paged'          => $page,
-        'offset'         => ($page - 1) * $numberposts,
+        'offset'         => $offset,
         'orderby'        => 'DATE',
         'order'          => 'DESC'
     ];
 
-    if ($search) {
-        $args['s'] = htmlspecialchars($search);
+    if ($termId) {
+        $args['tax_query'] = [
+            'relation' => 'OR',
+            [
+                'taxonomy' => 'category',
+                'field'    => 'id',
+                'terms'    => [$termId]
+            ],
+            [
+                'taxonomy' => 'post_tag',
+                'field'    => 'id',
+                'terms'    => [$termId]
+            ]
+        ];
     }
 
     $posts = new WP_Query($args);
