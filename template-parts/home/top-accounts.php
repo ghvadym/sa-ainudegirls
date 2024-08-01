@@ -5,7 +5,6 @@ $posts = _get_posts([
 ]);
 
 if (empty($posts)) {
-    echo sprintf('<section class="top_accounts"><div class="container"><h3>%s</h3></div></section>', __('There are no models', DOMAIN));
     return;
 }
 ?>
@@ -24,7 +23,7 @@ if (empty($posts)) {
                 ]);
             } ?>
         </div>
-        <?php if ($posts > $numberposts) { ?>
+        <?php if ($posts > POSTS_PER_PAGE) { ?>
             <div class="articles__btn">
                 <span id="articles_load" class="btn" data-page="1">
                     <?php _e('Load more', DOMAIN); ?>

@@ -4,17 +4,7 @@ add_action('init', 'create_post_types');
 
 function create_post_types()
 {
-    create_post_type('social', [
-        'publicly_queryable' => false,
-        'menu_icon'          => 'dashicons-share',
-        'supports'           => ['title', 'thumbnail'],
-        'labels'             => [
-            'name'          => __('Socials', DOMAIN),
-            'singular_name' => __('Social', DOMAIN),
-            'view_item'     => __('View Social', DOMAIN),
-            'menu_name'     => __('Social', DOMAIN)
-        ]
-    ]);
+    //
 }
 
 

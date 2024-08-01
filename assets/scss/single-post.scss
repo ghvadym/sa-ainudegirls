@@ -5,6 +5,10 @@
 .single_hero {
     @include response-max($mobile) {
         padding-bottom: 0;
+
+        .banner {
+            margin-bottom: 0;
+        }
     }
 }
 
@@ -102,6 +106,7 @@
 
     @include response-max($laptop-landscape - 1) {
         flex-direction: column;
+        gap: 24px;
     }
 }
 
@@ -164,7 +169,7 @@
     display: flex;
     justify-content: center;
     gap: 40px;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
 
     @include response-max($laptop-landscape - 1) {
         margin-bottom: 10px;
@@ -240,4 +245,9 @@
     color: $color-main;
     font-size: 20px;
     margin-bottom: 8px;
+
+    @include response-max($laptop-landscape - 1) {
+        margin-top: 8px;
+        margin-bottom: 0;
+    }
 }

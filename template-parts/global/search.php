@@ -1,17 +1,19 @@
 <section class="search">
     <div class="container-sm">
-        <div class="search__head">
-            <?php if (!empty($fields['search_title'])) { ?>
-                <h2 class="search__title title">
-                    <?php echo $fields['search_title']; ?>
-                </h2>
-            <?php } ?>
-            <?php if (!empty($fields['search_text'])) { ?>
-                <div class="search__subtitle subtitle">
-                    <?php echo $fields['search_text']; ?>
-                </div>
-            <?php } ?>
-        </div>
+        <?php if (!empty($fields['search_title']) || !empty($fields['search_text'])) { ?>
+            <div class="search__head">
+                <?php if (!empty($fields['search_title'])) { ?>
+                    <h2 class="search__title title">
+                        <?php echo $fields['search_title']; ?>
+                    </h2>
+                <?php } ?>
+                <?php if (!empty($fields['search_text'])) { ?>
+                    <div class="search__subtitle subtitle">
+                        <?php echo $fields['search_text']; ?>
+                    </div>
+                <?php } ?>
+            </div>
+        <?php } ?>
         <form role="search" method="get" id="searchform" class="search__form" action="http://fanvue.local/">
             <div class="search__form_body">
                 <input type="text" value="" name="s" id="s" class="search__input" placeholder="<?php _e('Search', DOMAIN); ?>">

@@ -12,7 +12,7 @@ get_template_part_var('home/hero', [
     'fields' => $fields
 ]);
 
-get_template_part_var('home/search', [
+get_template_part_var('global/search', [
     'fields' => $fields
 ]);
 

@@ -10,6 +10,7 @@ $queriedObject = get_queried_object();
             <h1 class="archive__title title_main">
                 <?php echo $term->name; ?>
             </h1>
+            <?php get_template_part_var('global/search'); ?>
             <div class="archive__posts">
                 <?php if (have_posts()) { ?>
                     <div class="articles">
@@ -28,7 +29,7 @@ $queriedObject = get_queried_object();
                     <?php } ?>
                 <?php } else { ?>
                     <h3 class="posts-none">
-                        <?php _e('Sorry, no content matched your search criteria', DOMAIN); ?>
+                        <?php _e('There are no models', DOMAIN); ?>
                     </h3>
                 <?php } ?>
             </div>

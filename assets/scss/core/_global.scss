@@ -51,6 +51,7 @@ h3 {
 
 h1 {
     font-size: 56px;
+    color: $color-main;
 
     @include response-max($mobile) {
         font-size: 32px;
@@ -93,6 +94,7 @@ h3 {
 
 .archive__title {
     color: $color-main;
+    margin-bottom: 32px;
 }
 
 .subtitle {
@@ -109,7 +111,7 @@ h3 {
 
 h1, h2, h3 {
     span {
-        color: $color-main;
+        color: $color-font;
     }
 }
 
@@ -206,7 +208,7 @@ section {
 .main {
     flex-grow: 1;
 
-    @include response-max($laptop-landscape) {
+    @include response-max($header-responsive) {
         padding-top: 88px;
     }
 }
@@ -277,13 +279,16 @@ section {
     background: $color-main;
     border: 1px solid $color-main;
     color: #fff;
-    display: inline-block;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
     font-size: 22px;
     line-height: 1;
     white-space: nowrap;
     font-weight: 400;
     text-align: center;
-    padding: 12px 32px;
+    height: 53px;
+    padding: 0 32px;
     position: relative;
     border-radius: 12px;
     transition: $transition;
@@ -311,7 +316,8 @@ section {
     }
 
     @include response-max($mobile) {
-        display: block;
+        width: 100%;
+        font-size: 24px;
     }
 }
 
@@ -472,6 +478,7 @@ section {
 .archive {
     .search {
         margin-bottom: 48px;
+        padding: 0;
 
         @include response-max($mobile) {
             margin-bottom: 32px;
@@ -537,7 +544,8 @@ section {
     }
 
     @include response-max($laptop-landscape - 1) {
-        font-size: 22px;
-        height: 50px;
+        font-size: 20px;
+        height: 48px;
+        padding: 0 17px;
     }
 }
