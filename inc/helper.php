@@ -298,3 +298,61 @@ function adv_banner_group($field = [], $option = [], $classes = '')
 
     banner_field($field, $classes);
 }
+
+function acf_repeater($postId = 0, $key = '', $subfields = [])
+{
+    $repeater = [];
+
+    if (!$postId || !$key || empty($subfields)) {
+        return $repeater;
+    }
+
+    $repeaterVal = get_post_meta($postId, $key, true);
+
+    for ($i = 0; $i < (int)$repeaterVal; $i++) {
+        foreach ($subfields as $subfield) {
+            $subFieldKey = $key . '_' . $i . '_' . $subfield;
+            $subFieldVal = get_post_meta($postId, $subFieldKey, true) ?: '';
+
+            if (!$subFieldVal) {
+                continue;
+            }
+
+            $repeater[$i][$subfield] = $subFieldVal;
+        }
+    }
+
+    return $repeater;
+}
+
+function post_meta_field($field = [])
+{
+    return !empty($field) ? $field[0] : null;
+}
+
+function prepare_model_fields($fields = []): array
+{
+    $readyFields = [];
+
+    if (empty($fields)) {
+        return $readyFields;
+    }
+
+    $readyFields = [
+        'fanvue_username'     => '',
+        'fanvue_name'         => '',
+        'fanvue_photos_count' => '',
+        'fanvue_videos_count' => '',
+        'fanvue_likes_count'  => '',
+        'fanvue_pricing'      => '',
+        'fanvue_description'  => ''
+    ];
+
+    foreach ($readyFields as $key => $val) {
+        if (array_key_exists($key, $fields) && !empty($fields[$key])) {
+            $readyFields[$key] = $fields[$key][0];
+        }
+    }
+
+    return $readyFields;
+}

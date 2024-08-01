@@ -2,9 +2,8 @@
 
 get_header();
 $post = get_post();
-$fields = get_fields($post->ID);
+$fields = get_post_meta($post->ID);
 $options = get_fields('options');
-
 $terms = get_the_terms($post, 'category');
 ?>
 
@@ -13,7 +12,7 @@ $terms = get_the_terms($post, 'category');
         <h1 class="single__title">
             <?php echo $post->post_title; ?>
         </h1>
-        <?php adv_banner_group($fields['adv_banner_1'] ?? [], $options['adv_banner_1'] ?? [], 'banner_full_width'); ?>
+        <?php adv_banner_group(post_meta_field($fields['adv_banner_1'] ?? []), $options['adv_banner_1'] ?? [], 'banner_full_width'); ?>
     </div>
 </section>
 
@@ -21,16 +20,18 @@ $terms = get_the_terms($post, 'category');
     <div class="container">
         <div class="single__content">
             <div class="single__content_row">
-                <div class="card">
-                    <?php get_template_part_var('cards/card-model', [
-                        'post'    => $post,
-                        'fields'  => $fields,
-                        'options' => $options
-                    ]); ?>
-                </div>
-                <?php if (!empty($fields['main_info_text'])) { ?>
+                <?php get_template_part_var('cards/card-model', [
+                    'post'    => $post,
+                    'fields'  => $fields,
+                    'options' => $options
+                ]); ?>
+                <?php if (!empty($fields['fanvue_description'])) { ?>
                     <div class="text_block">
-                        <?php echo $fields['main_info_text']; ?>
+                        <?php echo $fields['fanvue_description'][0]; ?>
+                    </div>
+                <?php } else { ?>
+                    <div class="text_block">
+                        <?php echo apply_filters('the_content', $post->post_content); ?>
                     </div>
                 <?php } ?>
             </div>
@@ -39,7 +40,7 @@ $terms = get_the_terms($post, 'category');
                     <div class="tags__title">
                         <?php
                         if (!empty($fields['tags_title']) && !empty($fields['main_info_title'])) {
-                            echo str_replace('[name]', $fields['main_info_title'], $fields['tags_title']);
+                            echo str_replace('[name]', $fields['main_info_title'][0], $fields['tags_title'][0]);
                         } else {
                             echo sprintf('%1$s relevant categories:', $fields['main_info_title'] ?? $post->post_title);
                         }
@@ -59,8 +60,9 @@ $terms = get_the_terms($post, 'category');
 </section>
 
 <?php
+
 get_template_part_var('global/faq', [
-    'faq_list' => get_field('faq', $post->ID)
+    'faq_list' => acf_repeater($post->ID, 'faq', ['title', 'text'])
 ]);
 
 get_footer();
