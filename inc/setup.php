@@ -134,11 +134,31 @@ function register_meta_boxes_call()
 
 function faq_metabox_call($post)
 {
-    echo sprintf(
-        '<small class="faq_ai_text">%1$s<br>%2$s</small><div id="faq-ai-generate" class="components-button is-primary faq_ai_btn" data-id="%3$s">%4$s</div><p class="faq_ai_error"></p>',
-        __('The process may take a few minutes.', DOMAIN),
-        $post->post_status !== 'publish' ? __('Publish the post beforehand.', DOMAIN) : '',
-        $post->ID,
-        __('Generate FAQ by AI', DOMAIN)
-    );
+    get_template_part_var('admin/metabox-ai', [
+        'post' => $post
+    ]);
+}
+
+add_filter('wp_nav_menu_items', 'add_custom', 10, 2);
+function add_custom($items, $args) {
+    if (wp_is_mobile()) {
+        return $items;
+    }
+
+    $footerMenuNames = [
+        'Footer menu 3',
+        'Footer menu 4',
+        'Footer menu 5',
+        'Footer menu 6',
+        'Footer menu 7',
+        'Footer menu 8',
+        'Footer menu 9',
+        'Footer menu 10'
+    ];
+
+    if (in_array($args->menu->name, $footerMenuNames) && $args->menu->count > 4) {
+        $items .= '<li class="menu_load_more" data-title="'.__('View Less', DOMAIN).'">'.__('View More', DOMAIN).'</li>';
+    }
+
+    return $items;
 }

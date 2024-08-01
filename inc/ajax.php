@@ -2,7 +2,8 @@
 
 register_ajax([
     'load_posts',
-    'faq_by_ai'
+    'faq_by_ai',
+    'desc_by_ai'
 ]);
 
 function load_posts()
@@ -103,6 +104,50 @@ function faq_by_ai()
         ]);
 
         return;
+    }
+
+    wp_send_json_success();
+}
+
+function desc_by_ai()
+{
+    check_ajax_referer('admin-nonce', 'nonce');
+
+    $data = sanitize_post($_POST);
+
+    if (empty($data)) {
+        wp_send_json_error('There is no data');
+        return false;
+    }
+
+    $postId = $data['post_id'] ?? 0;
+
+    if (!$postId) {
+        wp_send_json_error('There is no Post ID');
+        return false;
+    }
+
+    $modelFields = prepare_model_fields(get_post_meta($postId));
+    $name = $modelFields['fanvue_name'] ?? '';
+
+    if (empty($modelFields) || empty($name)) {
+        wp_send_json([
+            'error'   => true,
+            'message' => 'There is no necessary Fanvue data, check fields'
+        ]);
+
+        return false;
+    }
+
+    $question = 'Describe me ' . $name;
+    $keywords = "$name nude model";
+    $wordCount = 75;
+    $guide = "Include information about $name's identity, her professional activities, and why she's popular on Fanvue.";
+    $promptBody = get_field('prompt_body', 'options');
+    $answer = ask_question($modelFields, $question, $promptBody, $keywords, $wordCount, $guide);
+
+    if ($answer) {
+        update_field('fanvue_description', $answer, $postId);
     }
 
     wp_send_json_success();

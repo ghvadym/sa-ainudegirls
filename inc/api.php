@@ -346,3 +346,8 @@ function faq_update($postId = 0, $question = '', $answer = '')
 
     update_field('faq', $updatedFaq, $postId);
 }
+
+function update_description()
+{
+
+}
