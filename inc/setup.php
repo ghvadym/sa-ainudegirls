@@ -167,61 +167,33 @@ add_filter('manage_post_posts_columns', 'manage_posts_columns_call');
 function manage_posts_columns_call($columns)
 {
     return array_merge($columns, [
-        'youtube_subscribers'   => __('Faq'),
-        'twitch_subscribers'    => '',
+        'ai_faq' => 'FAQ'
     ]);
 }
 
 add_action('manage_posts_custom_column', 'action_custom_columns_content', 10, 2);
 function action_custom_columns_content($columnId, $postId)
 {
-    $meta = get_post_meta($postId);
-
-    if (empty($meta)) {
-        return;
-    }
-
-    $socials = [
-        'youtube'   => [
-            'username'    => 'youtube_channel_name',
-            'subscribers' => 'youtube_subscribers'
-        ],
-        'twitch'    => [
-            'username'    => 'twitch_username',
-            'subscribers' => 'twitch_subscribers'
-        ],
-        'instagram' => [
-            'username'    => 'instagram_username',
-            'subscribers' => 'instagram_subscribers',
-        ],
-        'tiktok'    => [
-            'username'    => 'tiktok_username',
-            'subscribers' => 'tiktok_subscribers'
-        ],
-        'X'         => [
-            'username'    => 'x_username',
-            'subscribers' => 'x_subscribers'
-        ],
-        'F'         => [
-            'username'    => 'fanvue_username',
-            'subscribers' => 'fanvue_subscribers'
-        ]
+    $fields = [
+        'ai_faq' => 'faq'
     ];
 
-    foreach ($socials as $social) {
-        if ($columnId !== $social['subscribers']) {
+    $faqOptions = get_field('faq_questions', 'options');
+    $faqOptionsCount = count($faqOptions);
+
+    foreach ($fields as $key => $field) {
+        if ($columnId !== $key) {
             continue;
         }
 
-        $username = !empty($meta[$social['username']]) ? $meta[$social['username']][0] : '';
-        $subscribers = !empty($meta[$social['subscribers']]) ? $meta[$social['subscribers']][0] : '';
+        $faqCount = get_post_meta($postId, 'faq', true);
 
-        if ($subscribers) {
+        if ($faqOptionsCount == $faqCount) {
             echo '<i class="subscribers_status status_true"></i>';
             return;
         }
 
-        if ($username) {
+        if (!$faqCount) {
             echo '<i class="subscribers_status status_false"></i>';
             return;
         }
