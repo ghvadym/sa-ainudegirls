@@ -38,13 +38,7 @@ $terms = get_the_terms($post, 'category');
             <?php if (!empty($terms)) { ?>
                 <div class="tags">
                     <div class="tags__title">
-                        <?php
-                        if (!empty($fields['tags_title']) && !empty($fields['main_info_title'])) {
-                            echo str_replace('[name]', $fields['main_info_title'][0], $fields['tags_title'][0]);
-                        } else {
-                            echo sprintf('%1$s relevant categories:', $fields['main_info_title'] ?? $post->post_title);
-                        }
-                        ?>
+                        <?php echo sprintf('%1$s relevant categories:', post_meta_field($fields['fanvue_name']) ?: $post->post_title); ?>
                     </div>
                     <div class="tags__list">
                         <?php foreach ($terms as $term) { ?>

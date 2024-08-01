@@ -7,7 +7,7 @@ if (empty($faq_list)) {
 <section class="faq_section">
     <div class="container-sm">
         <h2 class="title_main">
-            <?php _e('FAQs', DOMAIN); ?>
+            <?php _e('FAQ', DOMAIN); ?>
         </h2>
         <div class="faq__list">
             <?php foreach ($faq_list as $faq_item) { ?>

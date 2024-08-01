@@ -56,8 +56,11 @@ $fanvueData = [
             </a>
         <?php } ?>
 
-        <?php if (!empty($fields['main_info_link'])) {
-            echo link_html($fields['main_info_link'][0], 'card__btn btn');
+        <?php
+        if (!empty($fields['adv_link'])) {
+            echo link_html($fields['adv_link'][0], 'card__btn btn');
+        } else if (!empty($options['adv_link'])) {
+            echo link_html($options['adv_link'], 'card__btn btn');
         } ?>
     </div>
 </div>
