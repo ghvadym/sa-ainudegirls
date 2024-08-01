@@ -30,11 +30,8 @@ function wp_enqueue_scripts_call()
 add_action('admin_enqueue_scripts', 'admin_scripts_call');
 function admin_scripts_call()
 {
-    $post = get_post();
-    if (!empty($post) && $post->post_type === 'post') {
-        wp_enqueue_style('post-custom-styles', FV_THEME_URL . '/dest/css/admin-styles.css');
-        wp_enqueue_script('post-custom-scripts', FV_THEME_URL . '/dest/js/admin-scripts.js');
-    }
+    wp_enqueue_style('post-custom-styles', FV_THEME_URL . '/dest/css/admin-styles.css');
+    wp_enqueue_script('post-custom-scripts', FV_THEME_URL . '/dest/js/admin-scripts.js');
 
     wp_localize_script('post-custom-scripts', 'adminajax', [
         'ajaxurl' => admin_url('admin-ajax.php'),
@@ -189,15 +186,33 @@ function action_custom_columns_content($columnId, $postId)
         $faqCount = get_post_meta($postId, 'faq', true);
 
         if ($faqOptionsCount == $faqCount) {
-            echo '<i class="subscribers_status status_true"></i>';
+            echo '<i class="subscribers_status status_true" title="FAQ done"></i>';
             return;
         }
 
         if (!$faqCount) {
-            echo '<i class="subscribers_status status_false"></i>';
+            echo '<i class="subscribers_status status_false" title="FAQ is empty"></i>';
             return;
         }
 
-        echo '<i class="subscribers_status status_empty"></i>';
+        echo '<i class="subscribers_status status_empty" title="FAQ is not fully done"></i>';
     }
+}
+
+add_action('admin_menu', 'admin_menu_call');
+function admin_menu_call()
+{
+    add_submenu_page(
+        'options-general.php',
+        __('FAQ By AI', DOMAIN),
+        __('FAQ By AI', DOMAIN),
+        'manage_options',
+        'ai-settings',
+        'admin_ai_settings'
+    );
+}
+
+function admin_ai_settings()
+{
+    get_template_part_var('admin/ai-settings');
 }

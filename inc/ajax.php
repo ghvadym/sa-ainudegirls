@@ -3,7 +3,8 @@
 register_ajax([
     'load_posts',
     'faq_by_ai',
-    'desc_by_ai'
+    'desc_by_ai',
+    'ai_tool'
 ]);
 
 function load_posts()
@@ -127,6 +128,98 @@ function desc_by_ai()
         return false;
     }
 
+    $descriptionUpdate = description_update($postId);
+
+    if ($descriptionUpdate) {
+        wp_send_json_success();
+    } else {
+        wp_send_json_error('Something went wrong');
+    }
+}
+
+function ai_tool()
+{
+    check_ajax_referer('admin-nonce', 'nonce');
+
+    $data = sanitize_post($_POST);
+
+    if (empty($data)) {
+        wp_send_json_error('There is no data');
+        return;
+    }
+
+    $optionsFaq = get_field('faq_questions', 'options');
+
+    if (empty($optionsFaq)) {
+        wp_send_json([
+            'error'   => true,
+            'message' => 'There is no prepared questions. Fill out them first here: <a href="'.admin_url('admin.php?page=theme-general-settings').'" target="_blank">Options</a>'
+        ]);
+
+        return;
+    }
+
+    $posts = get_posts([
+        'numberposts' => -1,
+        'fields'      => 'ids',
+        'meta_query'  => [
+            'relation' => 'OR',
+            [
+                'key'     => 'faq',
+                'compare' => 'NOT EXISTS'
+            ],
+            [
+                'key'     => 'faq',
+                'value'   => count($optionsFaq),
+                'compare' => '<',
+                'type'    => 'numeric'
+            ]
+        ],
+    ]);
+
+    if (empty($posts)) {
+        wp_send_json([
+            'success' => true,
+            'finish'  => true,
+            'message' => __('FAQ for all posts are generated', DOMAIN)
+        ]);
+
+        return;
+    }
+
+    $postId = $posts[0] ?? 0;
+
+    if (!$postId) {
+        wp_send_json([
+            'error'   => true,
+            'message' => 'There are no Post ID'
+        ]);
+
+        return;
+    }
+
+    if (!get_post_meta($postId, 'fanvue_description_updated', true)) {
+        $descriptionUpdate = description_update($postId);
+
+        if ($descriptionUpdate) {
+            wp_send_json([
+                'success'      => true,
+                'post_id'      => $postId,
+                'desc_updated' => true,
+                'message'      => '<p><a href="' . get_edit_post_link($postId) . '" target="_blank">' . get_the_title($postId) . '</a> - Description updated</p>'
+            ]);
+
+            return;
+        } else {
+            wp_send_json([
+                'error'   => true,
+                'message' => 'Description was not updated'
+            ]);
+
+            return;
+        }
+    }
+
     $modelFields = prepare_model_fields(get_post_meta($postId));
     $name = $modelFields['fanvue_name'] ?? '';
 
@@ -136,10 +229,44 @@ function desc_by_ai()
             'message' => 'There is no necessary Fanvue data, check fields'
         ]);
 
-        return false;
+        return;
     }
 
-    $question = 'Describe me ' . $name;
+    $question = '';
+    $postIndex = 0;
+    $postFaqs = acf_repeater($postId, 'faq', ['title', 'text']);
+    $postFaqsTitles = array_map('trim', array_column($postFaqs, 'title'));
+
+    if (empty($postFaqs)) {
+        $question = model_fields_replacement($optionsFaq[0]['question'], $modelFields);
+    } else {
+        foreach ($optionsFaq as $index => $optionFaq) {
+            $optionsFaqQuestion = $optionFaq['question'] ?? '';
+            if (!$optionsFaqQuestion) {
+                continue;
+            }
+
+            $optionsFaqQuestion = model_fields_replacement($optionsFaqQuestion, $modelFields);
+
+            if (!in_array(trim($optionsFaqQuestion), $postFaqsTitles)) {
+                $question = $optionsFaqQuestion;
+                $postIndex = $index;
+                break;
+            }
+
+            /* If title exists in faq post */
+            $faqTitlesIndex = array_search($optionsFaqQuestion, $postFaqsTitles);
+            $faqText = $postFaqs[$faqTitlesIndex]['text'] ?? '';
+
+            /* If title exists but an answer is not exists */
+            if (!$faqText) {
+                $question = $optionsFaqQuestion;
+                $postIndex = $index;
+                break;
+            }
+        }
+    }
+
     $keywords = "$name nude model";
     $wordCount = 75;
     $guide = "Include information about $name's identity, her professional activities, and why she's popular on Fanvue.";
@@ -147,8 +274,24 @@ function desc_by_ai()
     $answer = ask_question($modelFields, $question, $promptBody, $keywords, $wordCount, $guide);
 
     if ($answer) {
-        update_field('fanvue_description', $answer, $postId);
-    }
+        faq_update($postId, $question, $answer);
 
-    wp_send_json_success();
+        $responseArgs = [
+            'success'        => true,
+            'post_id'        => $postId,
+            'question_index' => $postIndex,
+            'post_finished'  => true
+        ];
+
+        if (($postIndex + 1) === count($optionsFaq)) {
+            $responseArgs['message'] = '<p><a href="'.get_edit_post_link($postId).'" target="_blank">'.get_the_title($postId).'</a> - FAQ is Ready</p>';
+            $responseArgs['count_models'] = $posts > 1 ? count($posts) - 1 : 0;
+        }
+
+        wp_send_json($responseArgs);
+    } else {
+        wp_send_json([
+            'error' => true
+        ]);
+    }
 }

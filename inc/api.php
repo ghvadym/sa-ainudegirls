@@ -311,6 +311,41 @@ Process the text and return only the modified version with keywords inserted as 
     }
 }
 
+function description_update($postId = 0): bool
+{
+    if (!$postId) {
+        return false;
+    }
+
+    $modelFields = prepare_model_fields(get_post_meta($postId));
+    $name = $modelFields['fanvue_name'] ?? '';
+
+    if (empty($modelFields) || empty($name)) {
+        wp_send_json([
+            'error'   => true,
+            'message' => 'There is no necessary Fanvue data, check fields'
+        ]);
+
+        return false;
+    }
+
+    $question = 'Describe me ' . $name;
+    $keywords = "$name nude model";
+    $wordCount = 75;
+    $guide = "Include information about $name's identity, her professional activities, and why she's popular on Fanvue.";
+    $promptBody = get_field('prompt_body', 'options');
+    $answer = ask_question($modelFields, $question, $promptBody, $keywords, $wordCount, $guide);
+
+    if (!$answer) {
+        return false;
+    }
+
+    update_field('fanvue_description', $answer, $postId);
+    update_field('fanvue_description_updated', $answer, $postId);
+
+    return true;
+}
+
 function faq_update($postId = 0, $question = '', $answer = '')
 {
     if (!$postId || !$question || !$answer) {
@@ -318,7 +353,7 @@ function faq_update($postId = 0, $question = '', $answer = '')
     }
 
     $faq = get_field('faq', $postId);
-    $updatedFaq = $faq;
+    $updatedFaq = !empty($faq) ? $faq : [];
 
     if (!empty($faq)) {
         $faqTitles = array_map('trim', array_column($faq, 'title'));
@@ -345,9 +380,4 @@ function faq_update($postId = 0, $question = '', $answer = '')
     }
 
     update_field('faq', $updatedFaq, $postId);
-}
-
-function update_description()
-{
-
 }

@@ -309,6 +309,10 @@ function acf_repeater($postId = 0, $key = '', $subfields = [])
 
     $repeaterVal = get_post_meta($postId, $key, true);
 
+    if (!$repeaterVal) {
+        return [];
+    }
+
     for ($i = 0; $i < (int)$repeaterVal; $i++) {
         foreach ($subfields as $subfield) {
             $subFieldKey = $key . '_' . $i . '_' . $subfield;
