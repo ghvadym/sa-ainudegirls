@@ -57,10 +57,27 @@ $fanvueData = [
         <?php } ?>
 
         <?php
-        if (!empty($fields['adv_link'])) {
-            echo link_html($fields['adv_link'][0], 'card__btn btn');
-        } else if (!empty($options['adv_link'])) {
-            echo link_html($options['adv_link'], 'card__btn btn');
+        if (!empty($options['adv_links'])) {
+            foreach ($options['adv_links'] as $advLink) {
+                $link = $advLink['link'] ?? [];
+                $imgUrl = $advLink['img'] ?? '';
+                $bgTransparent = $advLink['transparent'] ?? false;
+                $btnClasses = 'card__btn ';
+                $btnClasses .= $bgTransparent ? 'btn_light' : 'btn';
+                ?>
+
+                <a href="<?php echo esc_url($link['url']); ?>"
+                   target="<?php echo $link['target'] ?? '_self'; ?>"
+                   class="<?php echo $btnClasses; ?>">
+                    <?php if ($imgUrl) { ?>
+                        <img src="<?php echo esc_url($imgUrl); ?>" alt="Button image">
+                    <?php } else {
+                        echo $link['title'] ?? __('Undress AI', DOMAIN);
+                    } ?>
+                </a>
+
+                <?php
+            }
         } ?>
     </div>
 </div>

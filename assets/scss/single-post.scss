@@ -136,17 +136,22 @@
 .card__btn {
     width: 100%;
     max-width: 100%;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
     height: 53px;
     font-size: 22px;
     display: flex;
     align-items: center;
     justify-content: center;
+    border-width: 2px;
 
     svg {
         margin-right: 8px;
         height: 14px;
         width: 14px;
+    }
+
+    img {
+        height: 80%;
     }
 
     @include response-max($laptop-landscape - 1) {

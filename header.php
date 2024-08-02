@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
     <title><?php wp_title( '|', true, 'right' ); ?></title>
-<!--    <script defer data-domain="ainudegirls.io" src="https://plausible.io/js/script.js"></script>-->
+    <script defer data-domain="ainudegirls.io" src="https://plausible.io/js/script.js"></script>
     <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>

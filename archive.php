@@ -11,6 +11,9 @@ $queriedObject = get_queried_object();
                 <?php echo $term->name; ?>
             </h1>
             <?php get_template_part_var('global/search'); ?>
+            <div class="container-sm">
+                <?php banner_field(get_field('archive_top_adv_banner', 'options'), 'banner_full_width'); ?>
+            </div>
             <div class="archive__posts">
                 <?php if (have_posts()) { ?>
                     <div class="articles">

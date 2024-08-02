@@ -1,5 +1,6 @@
 <section class="search">
     <div class="container-sm">
+        <?php banner_field($fields['search_adv_banner'] ?? [], 'banner_full_width'); ?>
         <?php if (!empty($fields['search_title']) || !empty($fields['search_text'])) { ?>
             <div class="search__head">
                 <?php if (!empty($fields['search_title'])) { ?>
@@ -14,7 +15,7 @@
                 <?php } ?>
             </div>
         <?php } ?>
-        <form role="search" method="get" id="searchform" class="search__form" action="http://fanvue.local/">
+        <form role="search" method="get" id="searchform" class="search__form" action="<?php echo home_url(); ?>">
             <div class="search__form_body">
                 <input type="text" value="" name="s" id="s" class="search__input" placeholder="<?php _e('Search', DOMAIN); ?>">
                 <button class="search__btn">

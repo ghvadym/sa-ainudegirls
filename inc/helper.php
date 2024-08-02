@@ -104,8 +104,7 @@ function _get_field($field, string $class = '', string $tag = 'div')
 
 function is_my_ip(): bool
 {
-    //return str_contains(get_ip(), '188.163.4.63');
-    return str_contains(get_ip(), '146.158.58.39');
+    return str_contains(get_ip(), '194.28.182.63');
 }
 
 function get_ip()
@@ -243,6 +242,21 @@ function get_img($imgId = 0, $size = 'full'): string
     }
 
     return wp_get_attachment_image($imgId, 'full');
+}
+
+function import_terms($categories = [], $append = false)
+{
+    if (empty($categories)) {
+        return;
+    }
+
+    foreach ($categories as $id => $terms) {
+        if (empty(get_post($id))) {
+            continue;
+        }
+
+        wp_set_post_terms($id, $terms, 'category', $append);
+    }
 }
 
 function get_banner($imgId = 0, $url = ''): string

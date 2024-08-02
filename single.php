@@ -56,7 +56,9 @@ $terms = get_the_terms($post, 'category');
 <?php
 
 get_template_part_var('global/faq', [
-    'faq_list' => acf_repeater($post->ID, 'faq', ['title', 'text'])
+    'faq_list' => acf_repeater($post->ID, 'faq', ['title', 'text']),
+    'fields'   => $fields,
+    'options'  => $options
 ]);
 
 get_footer();

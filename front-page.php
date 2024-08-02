@@ -25,7 +25,8 @@ get_template_part_var('home/tags', [
 ]);
 
 get_template_part_var('global/faq', [
-    'faq_list' => $fields['faq'] ?? []
+    'faq_list' => $fields['faq'] ?? [],
+    'banner'   => $fields['bottom_adv_banner'] ?? []
 ]);
 
 get_footer();

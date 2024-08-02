@@ -11,6 +11,9 @@ if (empty($seoData)) {
 ?>
 
 <section class="seo_data">
+    <div class="container-sm">
+        <?php banner_field(get_field('archive_faq_adv_banner', 'options'), 'banner_full_width'); ?>
+    </div>
     <div class="container">
         <?php if (!empty($seoData['title'])) { ?>
             <h2 class="title_main seo_data__title">

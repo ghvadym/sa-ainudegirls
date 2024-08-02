@@ -279,11 +279,11 @@ function ai_tool()
         $responseArgs = [
             'success'        => true,
             'post_id'        => $postId,
-            'question_index' => $postIndex,
-            'post_finished'  => true
+            'question_index' => $postIndex
         ];
 
         if (($postIndex + 1) === count($optionsFaq)) {
+            $responseArgs['post_finished'] = true;
             $responseArgs['message'] = '<p><a href="'.get_edit_post_link($postId).'" target="_blank">'.get_the_title($postId).'</a> - FAQ is Ready</p>';
             $responseArgs['count_models'] = $posts > 1 ? count($posts) - 1 : 0;
         }
