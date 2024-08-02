@@ -10,7 +10,11 @@ if (empty($faq_list)) {
         <h2 class="title_main">
             <?php _e('FAQ', DOMAIN); ?>
         </h2>
+    </div>
+    <div class="container">
         <?php adv_banner_group($fields['adv_banner_2'] ?? [], $options['adv_banner_2'] ?? [], 'banner_full_width'); ?>
+    </div>
+    <div class="container-sm">
         <div class="faq__list">
             <?php foreach ($faq_list as $i => $faq_item) { ?>
                 <div class="faq__item">

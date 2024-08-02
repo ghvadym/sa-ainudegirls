@@ -549,3 +549,53 @@ section {
         padding: 0 17px;
     }
 }
+
+.card {
+    width: 100%;
+    padding: 24px;
+    gap: 8px;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: 0 4px 12px 0 rgba(141, 110, 109, 0.1);
+    flex-shrink: 0;
+    height: fit-content;
+
+    @include response-min($laptop-landscape) {
+        max-width: 379px;
+    }
+}
+
+.more_posts__list {
+    display: flex;
+    column-gap: 32px;
+    row-gap: 24px;
+
+    @include response-max($laptop-landscape - 1) {
+        flex-direction: column;
+    }
+}
+
+.more_posts__item {
+    width: 100%;
+
+    .card__img img {
+        transition: $transition;
+    }
+
+    .card {
+        max-width: 100%;
+    }
+
+    @include response-min($laptop-landscape) {
+        max-width: calc(100% / 3);
+    }
+
+    @include response-min($desktop) {
+        &:hover {
+            .card__img img {
+                transform: scale(1.1);
+            }
+        }
+    }
+}

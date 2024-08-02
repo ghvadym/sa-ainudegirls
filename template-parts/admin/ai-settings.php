@@ -41,7 +41,7 @@ $posts = get_posts([
         <div class="ai-error"></div>
     <?php } else { ?>
         <h3>
-            <?php _e('All the Models has FAQ', DOMAIN); ?>
+            <?php _e('All the Models have an FAQ', DOMAIN); ?>
         </h3>
     <?php } ?>
 

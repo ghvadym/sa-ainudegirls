@@ -15,9 +15,15 @@ $fanvueData = [
 
 <div class="card">
     <?php if ($thumbnail) { ?>
-        <div class="card__img">
-            <?php echo $thumbnail ?>
-        </div>
+        <?php if (!empty($gallery)) { ?>
+            <a class="card__img" href="<?php echo get_the_permalink($post); ?>">
+                <?php echo $thumbnail ?>
+            </a>
+        <?php } else { ?>
+            <div class="card__img">
+                <?php echo $thumbnail ?>
+            </div>
+        <?php } ?>
     <?php } ?>
     <div class="card__body">
         <h1 class="card__title">
@@ -57,7 +63,7 @@ $fanvueData = [
         <?php } ?>
 
         <?php
-        if (!empty($options['adv_links'])) {
+        if (empty($gallery) && !empty($options['adv_links'])) {
             foreach ($options['adv_links'] as $advLink) {
                 $link = $advLink['link'] ?? [];
                 $imgUrl = $advLink['img'] ?? '';
