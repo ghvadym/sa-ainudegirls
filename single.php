@@ -13,6 +13,25 @@ $morePosts = get_posts([
 ]);
 ?>
 
+<?php if (!empty($options['adv_links_top'])) { ?>
+    <section class="adv_buttons">
+        <div class="container">
+            <div class="adv_buttons__row">
+                <?php foreach ($options['adv_links_top'] as $advLink) {
+                    $link = $advLink['link'] ?? []; ?>
+
+                    <a href="<?php echo esc_url($link['url']); ?>"
+                       target="<?php echo $link['target'] ?? '_self'; ?>" class="btn">
+                        <?php echo $link['title'] ?? '';?>
+                    </a>
+
+                    <?php
+                } ?>
+            </div>
+        </div>
+    </section>
+<?php } ?>
+
 <section class="single_hero">
     <div class="container">
         <h1 class="single__title">
