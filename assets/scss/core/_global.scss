@@ -599,3 +599,31 @@ section {
         }
     }
 }
+
+.adv_buttons {
+    padding: 0;
+}
+
+.adv_buttons__row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    column-gap: 7px;
+    row-gap: 12px;
+
+    @include response-max($mobile) {
+        justify-content: space-between;
+
+        a {
+            width: auto;
+            font-size: 21px;
+        }
+    }
+
+    @include response-max(376px) {
+        a {
+            font-size: 20px;
+            padding: 0 24px;
+        }
+    }
+}

@@ -37,3 +37,24 @@
             <?php breadcrumbs(); ?>
         </div>
     <?php } ?>
+
+    <?php
+    $advLinksTop = get_field('adv_links_top', 'options');
+    if (!empty($advLinksTop)) { ?>
+        <section class="adv_buttons">
+            <div class="container">
+                <div class="adv_buttons__row">
+                    <?php foreach ($advLinksTop as $advLink) {
+                        $link = $advLink['link'] ?? []; ?>
+
+                        <a href="<?php echo esc_url($link['url']); ?>"
+                           target="<?php echo $link['target'] ?? '_self'; ?>" class="btn">
+                            <?php echo $link['title'] ?? '';?>
+                        </a>
+
+                        <?php
+                    } ?>
+                </div>
+            </div>
+        </section>
+    <?php } ?>
