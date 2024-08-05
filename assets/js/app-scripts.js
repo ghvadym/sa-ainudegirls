@@ -167,5 +167,39 @@
                 });
             }
         }
+
+        const pushNotifications = $('.close_btn');
+        if (pushNotifications.length) {
+            $(document).on('click', '.close_btn', function () {
+                const wrap = $(this).closest('.push_notification');
+                const id = $(wrap).attr('id');
+
+                if (!localStorage.getItem(id)) {
+                    localStorage.setItem(id, '1');
+                }
+
+                if (wrap.length) {
+                    $(wrap).removeClass('show_up');
+                }
+            });
+        }
+
+        if (!localStorage.getItem('notification-square')) {
+            setTimeout(function () {
+                const notificationSquare = $('#notification-square');
+                if (notificationSquare.length) {
+                    $(notificationSquare).addClass('show_up');
+                }
+            }, 1000 );
+        }
+
+        if (!localStorage.getItem('notification-wide')) {
+            setTimeout(function () {
+                const notificationSquare = $('#notification-wide');
+                if (notificationSquare.length) {
+                    $(notificationSquare).addClass('show_up');
+                }
+            }, 2000 );
+        }
     });
 })(jQuery);

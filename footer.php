@@ -11,6 +11,9 @@ if (is_category() || is_tag()) {
 }
 
 $socials = get_field('socials', 'options');
+
+get_template_part_var('notifications/notification-square');
+get_template_part_var('notifications/notification-wide');
 ?>
 
 </main>

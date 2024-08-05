@@ -627,3 +627,145 @@ section {
         }
     }
 }
+
+.push_notification {
+    position: fixed;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 2px solid $color-main;
+    transition: $transition;
+    display: none;
+
+    .close_btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        display: flex;
+        border-radius: 50%;
+        overflow: hidden;
+        @include pointer;
+
+        svg {
+            margin: auto;
+        }
+    }
+
+    &.notification_square {
+        width: 298px;
+        height: 298px;
+
+        img {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        a {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+        }
+
+        .close_btn {
+            width: 21px;
+            height: 21px;
+            display: flex;
+            border: 1px solid #fff;
+
+            svg {
+                width: 10px;
+                height: 10px;
+            }
+        }
+    }
+
+    &.notification_wide {
+        width: 420px;
+        height: 90px;
+
+        .push_notification__row {
+            display: flex;
+            background-color: #fff;
+        }
+
+        .push_notification__body {
+            width: 100%;
+            padding: 12px 35px 12px 12px;
+        }
+
+        .notification_wide__img {
+            flex-shrink: 0;
+            width: 99px;
+            height: 100%;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+
+        .push_notification__title {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .push_notification__text {
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.2;
+
+            a {
+                font-weight: 700;
+            }
+        }
+
+        .close_btn {
+            top: 8px;
+            right: 8px;
+            width: 16px;
+            height: 16px;
+            background-color: $color-main;
+
+            svg {
+                width: 8px;
+                height: 8px;
+            }
+        }
+    }
+
+    &.top_left {
+        top: 20px;
+        left: 20px;
+    }
+
+    &.top_right {
+        top: 20px;
+        right: 20px;
+    }
+
+    &.bottom_right {
+        bottom: 20px;
+        right: 20px;
+    }
+
+    &.bottom_left {
+        bottom: 20px;
+        left: 20px;
+    }
+
+    &.show_up {
+        display: block;
+        animation: fadeId 0.5s ease-in-out;
+    }
+}
+
+.push_notification__btn {
+    border-radius: 42px;
+    border-width: 2px;
+}
