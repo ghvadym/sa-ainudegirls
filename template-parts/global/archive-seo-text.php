@@ -3,7 +3,9 @@ if (empty($term_id)) {
     return;
 }
 
-$seoData = get_field('seo_data', 'term_'.$term_id);
+$fields = get_fields('term_'.$term_id);
+$options = get_fields('options');
+$seoData = $fields['seo_data'] ?? [];
 
 if (empty($seoData)) {
     return;
@@ -12,7 +14,7 @@ if (empty($seoData)) {
 
 <section class="seo_data">
     <div class="container-sm">
-        <?php banner_field(get_field('archive_faq_adv_banner', 'options'), 'banner_full_width'); ?>
+        <?php adv_banner_group($fields['archive_faq_adv_banner'] ?? [], $options['archive_faq_adv_banner'] ?? [], 'banner_full_width'); ?>
     </div>
     <div class="container">
         <?php if (!empty($seoData['title'])) { ?>

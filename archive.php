@@ -3,6 +3,9 @@ get_header();
 $term = get_queried_object();
 $count = $GLOBALS['wp_query']->found_posts;
 $queriedObject = get_queried_object();
+
+$fields = get_fields('term_'.$term->term_id);
+$options = get_fields('options');
 ?>
 
     <section class="archive">
@@ -12,7 +15,7 @@ $queriedObject = get_queried_object();
             </h1>
             <?php get_template_part_var('global/search'); ?>
             <div class="container-sm">
-                <?php banner_field(get_field('archive_top_adv_banner', 'options'), 'banner_full_width'); ?>
+                <?php adv_banner_group($fields['archive_top_adv_banner'] ?? [], $options['archive_top_adv_banner'] ?? [], 'banner_full_width'); ?>
             </div>
             <div class="archive__posts">
                 <?php if (have_posts()) { ?>

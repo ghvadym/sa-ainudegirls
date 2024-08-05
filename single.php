@@ -50,30 +50,32 @@ $morePosts = get_posts([
                     'fields'  => $fields,
                     'options' => $options
                 ]); ?>
-                <?php if (!empty($fields['fanvue_description'])) { ?>
-                    <div class="text_block">
-                        <?php echo $fields['fanvue_description'][0]; ?>
-                    </div>
-                <?php } else { ?>
-                    <div class="text_block">
-                        <?php echo apply_filters('the_content', $post->post_content); ?>
-                    </div>
-                <?php } ?>
-            </div>
-            <?php if (!empty($terms)) { ?>
-                <div class="tags">
-                    <div class="tags__title">
-                        <?php echo sprintf('%1$s relevant categories:', post_meta_field($fields['fanvue_name']) ?: $post->post_title); ?>
-                    </div>
-                    <div class="tags__list">
-                        <?php foreach ($terms as $term) { ?>
-                            <a href="<?php echo get_term_link($term, $term->taxonomy); ?>" class="tags__item">
-                                <?php echo esc_html($term->name); ?>
-                            </a>
-                        <?php } ?>
-                    </div>
+                <div class="single__content_body">
+                    <?php if (!empty($fields['fanvue_description'])) { ?>
+                        <div class="text_block">
+                            <?php echo $fields['fanvue_description'][0]; ?>
+                        </div>
+                    <?php } else { ?>
+                        <div class="text_block">
+                            <?php echo apply_filters('the_content', $post->post_content); ?>
+                        </div>
+                    <?php } ?>
+                    <?php if (!empty($terms)) { ?>
+                        <div class="tags">
+                            <div class="tags__title">
+                                <?php echo sprintf('%1$s relevant categories:', post_meta_field($fields['fanvue_name']) ?: $post->post_title); ?>
+                            </div>
+                            <div class="tags__list">
+                                <?php foreach ($terms as $term) { ?>
+                                    <a href="<?php echo get_term_link($term, $term->taxonomy); ?>" class="tags__item">
+                                        <?php echo esc_html($term->name); ?>
+                                    </a>
+                                <?php } ?>
+                            </div>
+                        </div>
+                    <?php } ?>
                 </div>
-            <?php } ?>
+            </div>
         </div>
     </div>
 </section>

@@ -196,10 +196,6 @@
     .tags {
         margin-top: 16px;
 
-        @include response-min($laptop-landscape) {
-            margin-left: 411px;
-        }
-
         @include response-max($laptop-landscape - 1) {
             margin-top: 24px;
         }
