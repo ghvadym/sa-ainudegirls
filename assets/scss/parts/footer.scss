@@ -120,7 +120,7 @@
             }
         }
 
-        @include response-max($mobile) {
+        @include response-max($laptop-landscape) {
             margin-bottom: 40px;
         }
     }
@@ -313,11 +313,15 @@
 }
 
 .menu_load_more {
+    display: none;
     font-size: 16px;
     font-weight: 400;
     color: $color-main;
     text-decoration: underline;
     transition: $transition;
+    margin-top: 20px;
+    text-align: center;
+    width: 100%;
     @include pointer;
 
     @include response-min($desktop) {

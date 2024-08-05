@@ -54,6 +54,9 @@ $socials = get_field('socials', 'options');
                     <?php get_widgets([
                         'Footer nav 3'
                     ]); ?>
+                    <div class="menu_load_more" data-title="View Less">
+                        <?php _e('View More', DOMAIN); ?>
+                    </div>
                 </div>
             </div>
             <div class="footer__row">
@@ -64,6 +67,9 @@ $socials = get_field('socials', 'options');
                     <?php get_widgets([
                         'Footer nav 4'
                     ]); ?>
+                    <div class="menu_load_more" data-title="View Less">
+                        <?php _e('View More', DOMAIN); ?>
+                    </div>
                 </div>
                 <?php if (!empty($socials)) { ?>
                     <div class="footer__col footer__socials mobile">

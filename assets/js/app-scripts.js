@@ -104,16 +104,58 @@
             });
         }
 
-        const menuShowMore = $('.menu_load_more');
-        if (menuShowMore.length) {
-            $(document).on('click', '.menu_load_more', function () {
-                const menu = $(this).closest('ul.menu');
-                const dataTitle = $(this).attr('data-title');
-                const currentTitle = $(this).text();
+        if (isDesktop) {
+            const footerMenuRows = $('.footer__menu');
+            const maxMenuItems = 4;
+            if (footerMenuRows.length) {
+                $(footerMenuRows).each(function (index, footerMenuRow) {
+                    const footerMenus = $(footerMenuRow).find('ul.menu');
+                    const menuShowMore = $(footerMenuRow).find('.menu_load_more');
+                    let showLoadMoreBtn = false;
 
-                $(menu).toggleClass('full_content');
-                $(this).attr('data-title', currentTitle).text(dataTitle);
-            });
+                    if (!footerMenus.length || !menuShowMore.length) {
+                        return;
+                    }
+
+                    $(footerMenus).each(function (index, footerMenu) {
+                        const menuItems = $(footerMenu).find('li');
+
+                        if (menuItems.length && menuItems.length > maxMenuItems) {
+                            showLoadMoreBtn = true;
+                            return false;
+                        }
+                    });
+
+                    if (showLoadMoreBtn) {
+                        $(menuShowMore).show();
+                    }
+                });
+            }
+
+            const menuShowMore = $('.menu_load_more');
+            if (menuShowMore.length) {
+                $(document).on('click', '.menu_load_more', function () {
+                    const menuWrapper = $(this).closest('.footer__menu');
+                    const dataTitle = $(this).attr('data-title');
+                    const currentTitle = $(this).text();
+
+                    if (!menuWrapper.length) {
+                        return false;
+                    }
+
+                    const menus = $(menuWrapper).find('ul.menu');
+
+                    if (!menus) {
+                        return false;
+                    }
+
+                    $(menus).each(function (index, menu) {
+                        $(menu).toggleClass('full_content');
+                    });
+
+                    $(this).attr('data-title', currentTitle).text(dataTitle);
+                });
+            }
         }
 
         if (!isDesktop) {
