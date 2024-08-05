@@ -5,6 +5,7 @@ if (empty($post) || empty($fields)) {
 }
 
 $thumbnail = get_the_post_thumbnail($post, 'large');
+$permalink = get_the_permalink($post);
 
 $fanvueData = [
     'like'   => 'fanvue_likes_count',
@@ -16,7 +17,7 @@ $fanvueData = [
 <div class="card">
     <?php if ($thumbnail) { ?>
         <?php if (!empty($gallery)) { ?>
-            <a class="card__img" href="<?php echo get_the_permalink($post); ?>">
+            <a class="card__img" href="<?php echo $permalink; ?>">
                 <?php echo $thumbnail ?>
             </a>
         <?php } else { ?>
@@ -27,10 +28,20 @@ $fanvueData = [
     <?php } ?>
     <div class="card__body">
         <h1 class="card__title">
-            <?php if (!empty($fields['fanvue_name'])) {
-                echo esc_html($fields['fanvue_name'][0]);
-            } else {
-                echo esc_html($post->post_title);
+            <?php if (!empty($gallery)) { ?>
+                <a href="<?php echo $permalink; ?>">
+                    <?php if (!empty($fields['fanvue_name'])) {
+                        echo esc_html($fields['fanvue_name'][0]);
+                    } else {
+                        echo esc_html($post->post_title);
+                    } ?>
+                </a>
+            <?php } else {
+                if (!empty($fields['fanvue_name'])) {
+                    echo esc_html($fields['fanvue_name'][0]);
+                } else {
+                    echo esc_html($post->post_title);
+                }
             } ?>
         </h1>
 
