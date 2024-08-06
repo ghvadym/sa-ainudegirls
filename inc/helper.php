@@ -220,7 +220,7 @@ function get_api_key(string $key = ''): string
 
 function link_html($link = [], $class = ''): string
 {
-    if (empty($link) || !is_array($link)) {
+    if (empty($link) || !is_array($link) || empty($link['title']) || empty($link['url'])) {
         return '';
     }
 

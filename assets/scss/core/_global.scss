@@ -630,9 +630,6 @@ section {
 
 .push_notification {
     position: fixed;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 2px solid $color-main;
     transition: $transition;
     opacity: 0;
     visibility: hidden;
@@ -654,19 +651,15 @@ section {
     }
 
     &.notification_square {
-        width: 298px;
-        height: 298px;
+        width: fit-content;
+        height: auto;
 
         img {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            height: auto;
+            border: 2px solid $color-main;
         }
 
-        a {
+        .push_notification__btn {
             position: absolute;
             left: 50%;
             top: 50%;
@@ -678,10 +671,10 @@ section {
             width: 21px;
             height: 21px;
             display: flex;
-            border: 1px solid #fff;
+            border: 2px solid $color-main;
 
             svg {
-                width: 10px;
+                width: 9px;
                 height: 10px;
             }
         }
@@ -690,6 +683,9 @@ section {
     &.notification_wide {
         width: 420px;
         height: 90px;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 2px solid $color-main;
 
         .push_notification__row {
             display: flex;
@@ -737,7 +733,7 @@ section {
             background-color: $color-main;
 
             svg {
-                width: 8px;
+                width: 9px;
                 height: 8px;
             }
         }
