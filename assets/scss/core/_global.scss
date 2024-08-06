@@ -634,15 +634,18 @@ section {
     overflow: hidden;
     border: 2px solid $color-main;
     transition: $transition;
-    display: none;
+    opacity: 0;
+    visibility: hidden;
 
     .close_btn {
+        opacity: 0;
         position: absolute;
         top: 10px;
         right: 10px;
         display: flex;
         border-radius: 50%;
         overflow: hidden;
+        transition: 4s linear 3s;
         @include pointer;
 
         svg {
@@ -701,7 +704,6 @@ section {
         .notification_wide__img {
             flex-shrink: 0;
             width: 99px;
-            height: 100%;
 
             img {
                 width: 100%;
@@ -712,7 +714,9 @@ section {
 
         .push_notification__title {
             font-size: 16px;
+            line-height: 1.2;
             font-weight: 700;
+            margin-bottom: 5px;
         }
 
         .push_notification__text {
@@ -741,31 +745,57 @@ section {
 
     &.top_left {
         top: 20px;
-        left: 20px;
+        left: 24px;
     }
 
     &.top_right {
         top: 20px;
-        right: 20px;
+        right: 24px;
     }
 
     &.bottom_right {
         bottom: 20px;
-        right: 20px;
+        right: 24px;
     }
 
     &.bottom_left {
         bottom: 20px;
-        left: 20px;
+        left: 24px;
     }
 
     &.show_up {
-        display: block;
-        animation: fadeId 0.5s ease-in-out;
+        opacity: 1;
+        visibility: visible;
+
+        .close_btn {
+            opacity: 1;
+        }
+    }
+
+    @include response-max($header-responsive) {
+        &.top_left, &.top_right {
+            top: 100px;
+        }
+    }
+
+    @include response-max(550px) {
+        &.notification_wide {
+            width: auto;
+            height: auto;
+
+            &.top_right, &.bottom_right {
+                left: 24px;
+            }
+
+            &.top_left, &.bottom_left {
+                right: 24px;
+            }
+        }
     }
 }
 
 .push_notification__btn {
     border-radius: 42px;
     border-width: 2px;
+    width: auto;
 }

@@ -5,7 +5,7 @@ if (!$notification) {
     return;
 }
 
-if (empty($notification['img'])) {
+if (!empty($notification['hide']) || empty($notification['img'])) {
     return;
 }
 
@@ -16,7 +16,9 @@ if (!$img) {
 }
 ?>
 
-<div class="push_notification notification_wide <?php echo $notification['position'] ?? ''; ?>" id="notification-wide">
+<div class="push_notification notification_wide <?php echo $notification['position'] ?? ''; ?>"
+     id="notification-wide"
+     data-delay="<?php echo $notification['delay'] ?? ''; ?>">
     <div class="push_notification__row">
         <?php if ($notification['url']) { ?>
             <a href="<?php echo esc_url($notification['url']); ?>" class="notification_wide__img">

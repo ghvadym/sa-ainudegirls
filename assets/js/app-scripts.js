@@ -184,22 +184,28 @@
             });
         }
 
-        if (!localStorage.getItem('notification-square')) {
-            setTimeout(function () {
-                const notificationSquare = $('#notification-square');
-                if (notificationSquare.length) {
-                    $(notificationSquare).addClass('show_up');
-                }
-            }, 1000 );
-        }
+        const notifications = [
+            'notification-square',
+            'notification-wide'
+        ];
 
-        if (!localStorage.getItem('notification-wide')) {
-            setTimeout(function () {
-                const notificationSquare = $('#notification-wide');
-                if (notificationSquare.length) {
-                    $(notificationSquare).addClass('show_up');
+        $(notifications).each(function (index, item) {
+            if (localStorage.getItem(item)) {
+                return;
+            }
+
+            const notification = $('#'+item);
+            if (notification.length) {
+                const delay = $(notification).data('delay');
+
+                if (delay) {
+                    setTimeout(function () {
+                        $(notification).addClass('show_up');
+                    }, delay );
+                } else {
+                    $(notification).addClass('show_up');
                 }
-            }, 2000 );
-        }
+            }
+        });
     });
 })(jQuery);
