@@ -1,6 +1,5 @@
 <?php
 
-require_once(__DIR__ . '/lib/anthropic-sdk-php/vendor/autoload.php');
 require_once(__DIR__ . '/lib/open-ai/vendor/autoload.php');
 
 function faq_answers_generation(int $postId = 0, int $step = 1)
@@ -96,7 +95,7 @@ Please provide an answer based on the information given and the instructions pro
     try {
         $finalAnswer = '';
 
-        $answer = prompt($fullQuestion);
+        $answer = generateAnswer($fullQuestion, $questionBlank);
 
         if ($answer) {
             $finalAnswer = $answer;
@@ -157,42 +156,36 @@ function model_fields_replacement(string $string = '', array $modelInfo = []): s
     );
 }
 
-function prompt(string $question = '')
+function generateAnswer($fullQuestion, $questionBlank)
 {
-    if (empty($question)) {
+    if (empty($fullQuestion) || empty($questionBlank)) {
         return null;
     }
 
-    $apiKey = get_field('anthropic_api_key', 'options');
+    $apiKey = get_field('openai_api_key', 'options');
 
     if (empty($apiKey)) {
         return null;
     }
 
     try {
-        $anthropic = new \WpAi\Anthropic\AnthropicAPI($apiKey);
+        $client = OpenAI::client($apiKey);
 
-        $messages = [
-            [
-                'role'    => 'user',
-                'content' => $question
+        $response = $client->chat()->create([
+            'model' => 'gpt-4o',
+            'messages' => [
+                ['role' => 'system', 'content' => $questionBlank],
+                ['role' => 'user', 'content' => $fullQuestion]
             ],
-        ];
+            'max_tokens' => 1024
+        ]);
 
-        $options = [
-            'model'     => 'claude-3-5-sonnet-20240620',
-            'maxTokens' => 1024,
-            'messages'  => $messages
-        ];
-
-        $response = $anthropic->messages()->create($options);
-
-        return !empty($response->content) ? $response->content[0]['text'] : null;
+        return !empty($response['choices']) ? $response['choices'][0]['message']['content'] : null;
     } catch (Exception $e) {
         wp_send_json([
             'error'       => true,
             'message'     => __('Something went wrong, try again', DOMAIN),
-            'message_dev' => 'Error during text processing in Anthropic API: ' . $e->getMessage()
+            'message_dev' => 'Error during the First text processing in OpenAI: ' . $e->getMessage()
         ]);
 
         return false;
@@ -293,10 +286,11 @@ Process the text and return only the modified version with keywords inserted as 
         $client = OpenAI::client($apiKey);
 
         $response = $client->chat()->create([
-            'model' => 'gpt-4o-mini',
+            'model' => 'gpt-4o',
             'messages' => [
                 ['role' => 'user', 'content' => $prompt]
-            ]
+            ],
+            'max_tokens' => 1024
         ]);
 
         return !empty($response['choices']) ? $response['choices'][0]['message']['content'] : null;
@@ -304,7 +298,7 @@ Process the text and return only the modified version with keywords inserted as 
         wp_send_json([
             'error'       => true,
             'message'     => __('Something went wrong, try again', DOMAIN),
-            'message_dev' => 'Error during text processing in OpenAI: ' . $e->getMessage()
+            'message_dev' => 'Error during the Last text processing in OpenAI: ' . $e->getMessage()
         ]);
 
         return false;
