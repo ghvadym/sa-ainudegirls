@@ -36,6 +36,6 @@ if (!$img) {
         </div>
     <?php } ?>
     <div class="close_btn">
-        <?php get_svg('cross-white'); ?>
+        <?php get_svg('cross-orange'); ?>
     </div>
 </div>

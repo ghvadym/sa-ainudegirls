@@ -606,7 +606,6 @@ section {
 
 .adv_buttons__row {
     display: flex;
-    flex-wrap: wrap;
     justify-content: flex-end;
     column-gap: 7px;
     row-gap: 12px;
@@ -668,14 +667,14 @@ section {
         }
 
         .close_btn {
-            width: 21px;
-            height: 21px;
+            width: 32px;
+            height: 32px;
             display: flex;
             border: 2px solid $color-main;
 
             svg {
-                width: 9px;
-                height: 10px;
+                width: 17px;
+                height: 17px;
             }
         }
     }
@@ -728,13 +727,13 @@ section {
         .close_btn {
             top: 8px;
             right: 8px;
-            width: 16px;
-            height: 16px;
+            width: 20px;
+            height: 20px;
             background-color: $color-main;
 
             svg {
-                width: 9px;
-                height: 8px;
+                width: 11px;
+                height: 11px;
             }
         }
     }

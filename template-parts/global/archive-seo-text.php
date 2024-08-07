@@ -13,9 +13,6 @@ if (empty($seoData)) {
 ?>
 
 <section class="seo_data">
-    <div class="container-sm">
-        <?php adv_banner_group($fields['archive_faq_adv_banner'] ?? [], $options['archive_faq_adv_banner'] ?? [], 'banner_full_width'); ?>
-    </div>
     <div class="container">
         <?php if (!empty($seoData['title'])) { ?>
             <h2 class="title_main seo_data__title">

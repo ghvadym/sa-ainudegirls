@@ -27,7 +27,7 @@ $fanvueData = [
         <?php } ?>
     <?php } ?>
     <div class="card__body">
-        <h1 class="card__title">
+        <h3 class="card__title">
             <?php if (!empty($gallery)) { ?>
                 <a href="<?php echo $permalink; ?>">
                     <?php if (!empty($fields['fanvue_name'])) {
@@ -43,7 +43,7 @@ $fanvueData = [
                     echo esc_html($post->post_title);
                 }
             } ?>
-        </h1>
+        </h3>
 
         <div class="card__social">
             <?php foreach ($fanvueData as $key => $field) {
