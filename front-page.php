@@ -5,10 +5,6 @@
 
 get_header();
 
-echo ("<pre>");
-var_dump($_SESSION['aing_time']);
-echo ("</pre>");
-
 $post_id = get_the_ID();
 $fields = get_fields($post_id);
 

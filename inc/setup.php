@@ -239,13 +239,9 @@ function wp_footer_call()
 
     $activationTime = $clickUnder['time'] ?? '';
     if ($clickUnderActivation === 'by_time' && $activationTime) {
-        $time = $_SESSION['aing_time'] ?? '';
+        $time = $_SESSION['aing_time'] ?? 0;
 
-        if (!$time) {
-            $_SESSION['aing_time'] = time();
-        }
-
-        if ((time() - $time) > $activationTime) {
+        if (!$time || (time() - $time) > $activationTime) {
             $allowed = 1;
             $_SESSION['aing_time'] = time();
         }

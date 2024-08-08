@@ -271,24 +271,5 @@
             sessionStorage.setItem('click_under_clicked', '1');
         }
 
-        //updateStorageData();
-        function updateStorageData()
-        {
-            const clickUnder = window.aingSettings.clickUnder;
-
-            if (!clickUnder) {
-                return false;
-            }
-
-            const lastUrl = !clickUnder.hasOwnProperty('url_path') ? clickUnder.url_path : 0;
-            const pagesCounter = !clickUnder.hasOwnProperty('pages_counter') ? clickUnder.pages_counter : 0;
-            const currentUrl = window.location.href;
-
-            if (lastUrl !== currentUrl) {
-                clickUnder.pages_counter = parseInt(pagesCounter) + 1;
-                clickUnder.url_path = currentUrl;
-            }
-        }
-
     });
 })(jQuery);

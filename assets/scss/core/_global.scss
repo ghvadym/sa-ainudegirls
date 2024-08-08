@@ -632,6 +632,7 @@ section {
     transition: $transition;
     opacity: 0;
     visibility: hidden;
+    z-index: 10;
 
     .close_btn {
         position: absolute;
