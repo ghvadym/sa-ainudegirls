@@ -94,6 +94,10 @@ function disable_emojis()
     remove_filter('wp_mail', 'wp_staticize_emoji_for_email');
     add_filter('tiny_mce_plugins', 'disable_emojis_tinymce');
     add_filter('wp_resource_hints', 'disable_emojis_remove_dns_prefetch', 10, 2);
+
+    if (!session_id()) {
+        session_start();
+    }
 }
 
 function disable_emojis_tinymce($plugins)
@@ -191,4 +195,77 @@ function admin_menu_call()
 function admin_ai_settings()
 {
     get_template_part_var('admin/ai-settings');
+}
+
+add_action('wp_footer', 'wp_footer_call');
+function wp_footer_call()
+{
+    $pushNotificationsEnabled = get_field('push_notifications_enable', 'options') ?: 0;
+    $pushNotificationsDisplay = $pushNotificationsEnabled ? get_field('push_notifications_display', 'options') : 0;
+
+    $clickUnder = get_field('click_under', 'options');
+    $clickUnderEnabled = !empty($clickUnder['enable']) ? $clickUnder['enable'] : 0;
+    $clickUnderActivation = !empty($clickUnder['activation']) && $clickUnderEnabled ? $clickUnder['activation'] : 0;
+    $clickUnderUrl = !empty($clickUnder['adv_url']) ? $clickUnder['adv_url'] : 0;
+    $allowed = 0;
+
+    if (str_contains($clickUnderActivation, '_click')) {
+        $currentUrl = wp_get_current_url();
+        $lastUrl = $_SESSION['aing_url'] ?? '';
+        $counter = $_SESSION['aing_counter'] ?? 0;
+
+        if ($lastUrl !== $currentUrl) {
+            $newCounter = (int) $counter + 1;
+
+            if ($clickUnderActivation === 'each_1_click') {
+                $allowed = 1;
+            }
+
+            if ($clickUnderActivation === 'each_2_click' && $newCounter % 2 === 0) {
+                $allowed = 1;
+            }
+
+            if ($clickUnderActivation === 'each_3_click' && $newCounter % 3 === 0) {
+                $allowed = 1;
+            }
+
+            $_SESSION['aing_counter'] = $newCounter;
+            $_SESSION['aing_url'] = $currentUrl;
+        }
+    } else {
+        unset($_SESSION['aing_counter']);
+        unset($_SESSION['aing_url']);
+    }
+
+    $activationTime = $clickUnder['time'] ?? '';
+    if ($clickUnderActivation === 'by_time' && $activationTime) {
+        $time = $_SESSION['aing_time'] ?? '';
+
+        if (!$time) {
+            $_SESSION['aing_time'] = time();
+        }
+
+        if ((time() - $time) > $activationTime) {
+            $allowed = 1;
+            $_SESSION['aing_time'] = time();
+        }
+    } else {
+        unset($_SESSION['aing_time']);
+    }
+
+    echo '<script>';
+
+    echo
+    "window.aingSettings = {
+        pushNotifications : {
+            display : '$pushNotificationsDisplay'
+        },
+        clickUnder        : {
+            activation : '$clickUnderActivation',
+            adv_url    : '$clickUnderUrl',
+            allowed    : '$allowed',
+         }
+    };";
+
+    echo '</script>';
 }
