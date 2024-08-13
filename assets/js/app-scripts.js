@@ -217,48 +217,46 @@
 
         /* ---------- */
 
-        sessionStorage.setItem('click_under_clicked', '0');
+        const clickUnder = window.aingSettings.clickUnder;
+        if (clickUnder && clickUnder.hasOwnProperty('activation') && clickUnder.hasOwnProperty('adv_url') && clickUnder.activation !== '0' && clickUnder.adv_url) {
+            sessionStorage.setItem('click_under_clicked', '0');
 
-        $(document).on('click', 'a', function (e) {
-            const clickUnder = window.aingSettings.clickUnder;
-            const clickUnderStatusKey = 'click_under_status';
-            const clicked = sessionStorage.getItem('click_under_clicked') === '1';
+            $(document).on('click', 'a, .close_btn', function (e) {
+                const clickUnderStatusKey = 'click_under_status';
+                const clicked = sessionStorage.getItem('click_under_clicked') === '1';
 
-            if (!clickUnder.hasOwnProperty('activation') || !clickUnder.hasOwnProperty('adv_url') || clickUnder.activation === '0' || !clickUnder.adv_url) {
-                return;
-            }
+                if (clickUnder.activation === 'once' && localStorage.getItem(clickUnderStatusKey)) {
+                    return;
+                }
 
-            if (clickUnder.activation === 'once' && localStorage.getItem(clickUnderStatusKey)) {
-                return;
-            }
+                if (clickUnder.activation === 'once_a_session' && sessionStorage.getItem(clickUnderStatusKey)) {
+                    return;
+                }
 
-            if (clickUnder.activation === 'once_a_session' && sessionStorage.getItem(clickUnderStatusKey)) {
-                return;
-            }
+                if ((clickUnder.activation === 'each_1_click' || clickUnder.activation === 'each_2_click' || clickUnder.activation === 'each_3_click') && (!clickUnder.hasOwnProperty('allowed') || clickUnder.allowed === '0' || clicked)) {
+                    return;
+                }
 
-            if ((clickUnder.activation === 'each_1_click' || clickUnder.activation === 'each_2_click' || clickUnder.activation === 'each_3_click') && (!clickUnder.hasOwnProperty('allowed') || clickUnder.allowed === '0' || clicked)) {
-                return;
-            }
+                if (clickUnder.activation === 'by_time' && (!clickUnder.hasOwnProperty('allowed') || clickUnder.allowed === '0' || clicked)) {
+                    return;
+                }
 
-            if (clickUnder.activation === 'by_time' && (!clickUnder.hasOwnProperty('allowed') || clickUnder.allowed === '0' || clicked)) {
-                return;
-            }
+                e.preventDefault();
+                clickUnderOpenLink(clickUnder.adv_url);
 
-            e.preventDefault();
-            clickUnderOpenLink(clickUnder.adv_url);
+                if (clickUnder.activation === 'once') {
+                    localStorage.setItem(clickUnderStatusKey, '1');
+                } else {
+                    localStorage.removeItem(clickUnderStatusKey);
+                }
 
-            if (clickUnder.activation === 'once') {
-                localStorage.setItem(clickUnderStatusKey, '1');
-            } else {
-                localStorage.removeItem(clickUnderStatusKey);
-            }
-
-            if (clickUnder.activation === 'once_a_session') {
-                sessionStorage.setItem(clickUnderStatusKey, '1');
-            } else {
-                sessionStorage.removeItem(clickUnderStatusKey);
-            }
-        });
+                if (clickUnder.activation === 'once_a_session') {
+                    sessionStorage.setItem(clickUnderStatusKey, '1');
+                } else {
+                    sessionStorage.removeItem(clickUnderStatusKey);
+                }
+            });
+        }
 
         function clickUnderOpenLink(url)
         {
